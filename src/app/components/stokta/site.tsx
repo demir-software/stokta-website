@@ -1,143 +1,51 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
+  Apple,
   ArrowRight,
   Barcode,
-  Check,
-  ChevronLeft,
-  ChevronRight,
+  CalendarClock,
   FileSpreadsheet,
   FileText,
-  Gauge,
   Languages,
-  PackagePlus,
-  Palette,
-  RotateCcw,
-  ScanLine,
+  Menu,
+  PackageCheck,
+  Play,
+  Send,
   ShieldCheck,
   Store,
+  X,
 } from "lucide-react";
-import homeScreenshot from "../../../assets/screenshots/home.png";
-import productsScreenshot from "../../../assets/screenshots/products.png";
-import scannerScreenshot from "../../../assets/screenshots/scanner.jpg";
-import storesScreenshot from "../../../assets/screenshots/stores.png";
-import appearanceScreenshot from "../../../assets/screenshots/appearance.png";
-import backupScreenshot from "../../../assets/screenshots/backup-restore.png";
+import { IPhoneDemo } from "./iphone-demo";
 
-const screenshots = [
-  {
-    label: "Home",
-    src: homeScreenshot,
-    alt: "Stokta home dashboard showing 24 store-products, 886 total units, 8 low-stock items, 3 active stores, and recent activity.",
-    description: "A compact pulse on stock, reports, backups, and recent movement.",
-  },
-  {
-    label: "Products",
-    src: productsScreenshot,
-    alt: "Stokta product inventory for Main Store with search, add, scan, sort, import, export, quantities, and stock status indicators.",
-    description: "Search, scan, sort, import, and export from one focused inventory view.",
-  },
-  {
-    label: "Scanner",
-    src: scannerScreenshot,
-    alt: "Stokta full-screen barcode scanner with a camera preview and a clear alignment frame.",
-    description: "A full-screen scanner built for fast product creation and lookup.",
-  },
-  {
-    label: "Stores",
-    src: storesScreenshot,
-    alt: "Stokta stores overview showing Ankara Branch, Istanbul Depot, and Main Store with independent quantities and low-stock counts.",
-    description: "Each location keeps its own SKUs, quantities, and low-stock count.",
-  },
-  {
-    label: "Appearance",
-    src: appearanceScreenshot,
-    alt: "Stokta appearance settings for theme, interface font, text size, density, and contrast.",
-    description: "Theme, typography, scale, density, contrast, and motion adapt to the team.",
-  },
-  {
-    label: "Backups",
-    src: backupScreenshot,
-    alt: "Stokta backup and restore screen with optional automatic backups, back up now, and choose backup file controls.",
-    description: "Optional daily local CSV backups with a warned, user-selected rollback flow.",
-  },
-] as const;
+const APP_STORE_URL = "https://apps.apple.com/us/search?term=Stokta";
+const GOOGLE_PLAY_URL = "https://play.google.com/store/search?q=Stokta&c=apps";
+const SUPPORT_EMAIL = "dev@furkandemir.net";
 
 const features = [
-  {
-    icon: PackagePlus,
-    title: "Add products your way",
-    body: "Create products manually or use the camera to add and find them by barcode without breaking your stockroom rhythm.",
-  },
-  {
-    icon: Store,
-    title: "Independent store inventory",
-    body: "Keep SKUs and quantities separate for as many as 10 stores, then move between locations from a single workspace.",
-  },
-  {
-    icon: Barcode,
-    title: "Find what needs attention",
-    body: "Search and sort the catalogue while low-stock and out-of-stock indicators make the next action obvious.",
-  },
-  {
-    icon: FileSpreadsheet,
-    title: "Local file workflows",
-    body: "Import and export CSV or Excel files only when you choose. There are no cloud-drive integrations in the workflow.",
-  },
-  {
-    icon: RotateCcw,
-    title: "Back up, then roll back",
-    body: "Enable optional daily local CSV backups, create one on demand, or select a backup for a clearly warned full rollback.",
-  },
-  {
-    icon: FileText,
-    title: "Reports that fit the question",
-    body: "Generate and preview PDF inventory reports for Today, 7 days, 30 days, 3 months, or 6 months, with recent history close by.",
-  },
-  {
-    icon: ScanLine,
-    title: "Guidance from the first scan",
-    body: "A focused onboarding flow and six-step in-app tour introduce products, scanning, stores, profile, customization, and data tools.",
-  },
-  {
-    icon: Palette,
-    title: "An interface that adapts",
-    body: "Choose theme, typeface, text size, density, contrast, inventory display, haptics, and reduced-motion behavior.",
-  },
+  { icon: Store, value: "10", title: "stores", body: "Run independent SKUs, quantities and stock thresholds for as many as ten active locations." },
+  { icon: PackageCheck, value: "100,000", title: "products", body: "Keep a serious catalogue responsive, searchable and organized on the device." },
+  { icon: Barcode, value: "SCAN", title: "barcode scanning", body: "Add and find products by pointing the camera at the barcode—frames are never stored." },
+  { icon: CalendarClock, value: "DAILY", title: "scheduled backups", body: "Enable an optional daily local snapshot, create one now or perform a warned full rollback." },
+  { icon: FileSpreadsheet, value: "CSV · XLSX", title: "bulk import / export", body: "Move full inventories through validated local files and the native save or share sheet." },
+  { icon: FileText, value: "6 MONTHS", title: "reporting", body: "Generate local PDF reports for today, 7 days, 30 days, 3 months or 6 months." },
 ] as const;
 
 const languages = [
-  "English",
-  "Türkçe",
-  "O‘zbekcha",
-  "Қазақша",
-  "Кыргызча",
-  "Русский",
-  "Azərbaycanca",
+  ["🇬🇧", "English"],
+  ["🇹🇷", "Türkçe"],
+  ["🇺🇿", "O‘zbekcha"],
+  ["🇰🇿", "Қазақша"],
+  ["🇰🇬", "Кыргызча"],
+  ["🇷🇺", "Русский"],
+  ["🇦🇿", "Azərbaycanca"],
 ] as const;
 
 function BrandMark({ size = 36 }: { size?: number }) {
   const bars = [4, 7, 10, 14, 18, 21, 25, 28, 32];
-
   return (
-    <svg
-      aria-hidden="true"
-      className="brand-mark"
-      height={size}
-      viewBox="0 0 40 40"
-      width={size}
-    >
+    <svg aria-hidden="true" className="brand-mark" height={size} viewBox="0 0 40 40" width={size}>
       <rect fill="currentColor" height="40" rx="9" width="40" />
-      {bars.map((x, index) => (
-        <rect
-          fill="var(--paper)"
-          height="15"
-          key={x}
-          opacity={index % 2 === 0 ? 0.95 : 0.48}
-          width={index % 3 === 0 ? 2.6 : 1.5}
-          x={x}
-          y="9"
-        />
-      ))}
+      {bars.map((x, index) => <rect fill="var(--paper)" height="15" key={x} opacity={index % 2 === 0 ? 0.95 : 0.48} width={index % 3 === 0 ? 2.6 : 1.5} x={x} y="9" />)}
       <rect fill="var(--paper)" height="2" opacity="0.9" rx="1" width="32" x="4" y="18" />
       <rect fill="var(--paper)" height="1.6" opacity="0.24" rx="0.8" width="25" x="5" y="28" />
       <rect fill="var(--paper)" height="1.6" opacity="0.14" rx="0.8" width="15" x="5" y="31.5" />
@@ -145,88 +53,59 @@ function BrandMark({ size = 36 }: { size?: number }) {
   );
 }
 
-function ProductCarousel() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const active = screenshots[activeIndex];
+function StoreButton({ store }: { store: "apple" | "google" }) {
+  const apple = store === "apple";
+  return (
+    <a className="store-button" href={apple ? APP_STORE_URL : GOOGLE_PLAY_URL} rel="noreferrer" target="_blank">
+      {apple ? <Apple aria-hidden="true" size={25} /> : <Play aria-hidden="true" fill="currentColor" size={22} />}
+      <span><small>{apple ? "Download on the" : "GET IT ON"}</small><strong>{apple ? "App Store" : "Google Play"}</strong></span>
+    </a>
+  );
+}
 
-  const selectRelative = (difference: number) => {
-    setActiveIndex((current) => (current + difference + screenshots.length) % screenshots.length);
+function SupportForm() {
+  const [status, setStatus] = useState("");
+
+  const submitSupport = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const platform = String(data.get("platform") ?? "Not specified");
+    const message = String(data.get("message") ?? "").trim();
+    const subject = encodeURIComponent(`Stokta support request from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPlatform: ${platform}\n\n${message}`);
+    setStatus("Your email app is opening with the support request prepared.");
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
   return (
-    <section aria-labelledby="product-title" className="product-stage" id="product">
-      <div className="phone-wrap">
-        <div className="phone-shadow" aria-hidden="true" />
-        <div className="phone-shell">
-          <div className="phone-speaker" aria-hidden="true" />
-          <div className="phone-screen" id="product-panel" role="tabpanel">
-            <img
-              alt={active.alt}
-              className="phone-screenshot"
-              decoding="async"
-              height="2868"
-              key={active.src}
-              loading={activeIndex === 0 ? "eager" : "lazy"}
-              src={active.src}
-              width="1320"
-            />
-          </div>
-        </div>
+    <form className="support-form" onSubmit={submitSupport}>
+      <div className="form-row">
+        <label>Name<input autoComplete="name" name="name" placeholder="Your name" required /></label>
+        <label>Email<input autoComplete="email" name="email" placeholder="you@example.com" required type="email" /></label>
       </div>
-
-      <div className="product-controls">
-        <div className="carousel-heading">
-          <div aria-live="polite">
-            <span className="eyebrow eyebrow-dark">Real product screens</span>
-            <h2 id="product-title">{active.label}</h2>
-          </div>
-          <div className="arrow-controls">
-            <button aria-label="Show previous screen" onClick={() => selectRelative(-1)} type="button">
-              <ChevronLeft aria-hidden="true" size={18} />
-            </button>
-            <button aria-label="Show next screen" onClick={() => selectRelative(1)} type="button">
-              <ChevronRight aria-hidden="true" size={18} />
-            </button>
-          </div>
-        </div>
-        <p className="product-description">{active.description}</p>
-        <div aria-label="Choose an app screen" className="screen-tabs" role="tablist">
-          {screenshots.map((screen, index) => (
-            <button
-              aria-controls="product-panel"
-              aria-selected={index === activeIndex}
-              className={index === activeIndex ? "is-active" : undefined}
-              key={screen.label}
-              onClick={() => setActiveIndex(index)}
-              role="tab"
-              type="button"
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {screen.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </section>
+      <label>Platform<select defaultValue="iPhone / iPad" name="platform"><option>iPhone / iPad</option><option>Android</option><option>Website</option><option>Other</option></select></label>
+      <label>How can we help?<textarea minLength={12} name="message" placeholder="Describe the issue, what you expected and what happened." required rows={6} /></label>
+      <div className="support-submit-row"><button className="button button-primary" type="submit">Prepare support email <Send aria-hidden="true" size={17} /></button><p aria-live="polite">{status || <>Opens your email app. You review the message before sending.</>}</p></div>
+    </form>
   );
 }
 
 export function ShowcaseSite() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <div className="site-shell">
       <a className="skip-link" href="#main-content">Skip to content</a>
-
       <header className="site-header">
-        <a aria-label="Stokta home" className="brand-lockup" href="#top">
-          <BrandMark size={34} />
-          <span>Stokta</span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#features">Features</a>
-          <a href="#workflow">Workflow</a>
-          <a href="#privacy">Privacy</a>
+        <a aria-label="Stokta home" className="brand-lockup" href="#top" onClick={closeMenu}><BrandMark size={34} /><span>Stokta</span></a>
+        <button aria-controls="primary-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? "Close navigation" : "Open navigation"} className="nav-toggle" onClick={() => setMenuOpen((open) => !open)} type="button">{menuOpen ? <X size={20} /> : <Menu size={20} />}</button>
+        <nav className={menuOpen ? "is-open" : ""} id="primary-navigation" aria-label="Primary navigation">
+          <a href="#demo" onClick={closeMenu}>App demo</a><a href="#features" onClick={closeMenu}>Features</a><a href="#privacy" onClick={closeMenu}>Privacy</a><a href="#terms" onClick={closeMenu}>Terms</a><a href="#support" onClick={closeMenu}>Support</a>
         </nav>
-        <a className="header-action" href="#product">View the app</a>
+        <a className="header-action" href="#download">Download</a>
       </header>
 
       <main id="main-content">
@@ -234,144 +113,54 @@ export function ShowcaseSite() {
           <div className="hero-copy">
             <span className="eyebrow"><span className="status-dot" /> Local-first inventory</span>
             <h1>Know what is in stock. Everywhere.</h1>
-            <p className="hero-lede">
-              Stokta keeps products, quantities, reports, and backups close to the people doing the work—fast to scan, clear to review, and local to the device.
-            </p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#product">
-                Explore real screens <ArrowRight aria-hidden="true" size={18} />
-              </a>
-              <a className="button button-secondary" href="#features">See what it does</a>
-            </div>
-            <ul aria-label="Product highlights" className="hero-notes">
-              <li><Check aria-hidden="true" size={15} /> Up to 10 stores</li>
-              <li><Check aria-hidden="true" size={15} /> Local CSV &amp; Excel</li>
-              <li><Check aria-hidden="true" size={15} /> 7 interface languages</li>
-            </ul>
+            <p className="hero-lede">Stokta keeps products, quantities, reports and backups close to the people doing the work—fast to scan, clear to review and local by default.</p>
+            <div className="store-buttons" id="download"><StoreButton store="apple" /><StoreButton store="google" /></div>
+            <a className="hero-text-link" href="#demo">Try the interactive app <ArrowRight aria-hidden="true" size={17} /></a>
           </div>
-
-          <ProductCarousel />
-        </section>
-
-        <section aria-label="Current inventory snapshot" className="metric-strip">
-          <dl>
-            <div><dt>Store-products</dt><dd>24</dd></div>
-            <div><dt>Total units</dt><dd>886</dd></div>
-            <div><dt>Low stock</dt><dd>8</dd></div>
-            <div><dt>Active stores</dt><dd>3</dd></div>
-          </dl>
+          <div id="demo"><IPhoneDemo /></div>
         </section>
 
         <section className="section section-dark" id="features">
-          <div className="section-heading">
-            <span className="eyebrow eyebrow-on-dark">One calm inventory system</span>
-            <h2>Built around the work, not around a dashboard.</h2>
-            <p>From the first barcode to a six-month report, every tool stays focused and close at hand.</p>
-          </div>
+          <div className="section-heading"><span className="eyebrow eyebrow-on-dark">Built for real inventory</span><h2>Big capacity. Small learning curve.</h2><p>Seven focused capabilities cover the daily work—from the first scan to a six-month record.</p></div>
           <div className="feature-grid">
-            {features.map(({ icon: Icon, title, body }, index) => (
-              <article className="feature-card" key={title}>
-                <div className="feature-index">{String(index + 1).padStart(2, "0")}</div>
-                <Icon aria-hidden="true" className="feature-icon" size={22} />
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </article>
-            ))}
+            {features.map(({ icon: Icon, value, title, body }, index) => <article className="feature-card" key={title}><div className="feature-index">{String(index + 1).padStart(2, "0")}</div><Icon aria-hidden="true" className="feature-icon" size={22} /><strong className="feature-value">{value}</strong><h3>{title}</h3><p>{body}</p></article>)}
+            <article className="feature-card language-feature"><div className="feature-index">07</div><Languages aria-hidden="true" className="feature-icon" size={22} /><strong className="feature-value">7</strong><h3>interface languages</h3><ul>{languages.map(([flag, name]) => <li key={name}><span aria-hidden="true">{flag}</span>{name}</li>)}</ul></article>
           </div>
         </section>
 
-        <section className="section workflow-section" id="workflow">
-          <div className="section-heading section-heading-ink">
-            <span className="eyebrow">A shorter path through stock</span>
-            <h2>Capture. Control. Keep a local record.</h2>
-          </div>
-          <ol className="workflow-list">
-            <li>
-              <span className="workflow-number">01</span>
-              <div>
-                <h3>Add or find the product</h3>
-                <p>Enter product details manually or point the camera at a barcode for a faster lookup.</p>
-              </div>
-            </li>
-            <li>
-              <span className="workflow-number">02</span>
-              <div>
-                <h3>Work in the right store</h3>
-                <p>Adjust that location’s quantity while search, sorting, and stock indicators keep the catalogue readable.</p>
-              </div>
-            </li>
-            <li>
-              <span className="workflow-number">03</span>
-              <div>
-                <h3>Report or protect the result</h3>
-                <p>Export local files, create a PDF report, or make a device backup before a warned rollback.</p>
-              </div>
-            </li>
-          </ol>
-        </section>
-
-        <section className="preference-band">
-          <div>
-            <span className="eyebrow eyebrow-on-dark">Made for different teams</span>
-            <h2>Readable, adaptable, multilingual.</h2>
-            <p>
-              Space Grotesk gives the interface its compact modern-retro voice. In the app, teams can also choose IBM Plex Sans or Atkinson Hyperlegible, then tune text size, density, contrast, haptics, inventory rows, and reduced motion.
-            </p>
-          </div>
-          <div className="language-panel">
-            <Languages aria-hidden="true" size={26} />
-            <h3>Seven interface languages</h3>
-            <ul>
-              {languages.map((language) => <li key={language}>{language}</li>)}
-            </ul>
+        <section className="section legal-section" id="privacy">
+          <div className="legal-heading"><ShieldCheck aria-hidden="true" size={30} /><span className="eyebrow">Privacy policy</span><h2>Local by default, transparent by design.</h2><p>Effective September 9, 2026</p></div>
+          <div className="legal-copy">
+            <article><h3>What Stokta stores</h3><p>Your profile, settings, inventory, audit history, generated reports and backups are stored locally on your device. The public website does not use advertising cookies, account tracking or analytics scripts.</p></article>
+            <article><h3>Camera and file access</h3><p>Camera frames are processed only to recognize barcodes and are not saved by Stokta. Files are accessed only when you choose to import, export, create a backup or restore data.</p></article>
+            <article><h3>Optional synchronization</h3><p>Stokta does not upload local inventory to a cloud service by default. If an organization configures its own synchronization server, synchronized records are governed by that organization’s privacy policy and configuration.</p></article>
+            <article><h3>Support messages</h3><p>The support form prepares an email in your device’s email application. Nothing is transmitted by this website. If you send it, your name, email address, platform and message are processed by your email provider and Demir Software only to respond to the request.</p></article>
+            <article><h3>Retention and deletion</h3><p>Local app data remains until you delete it in Stokta or uninstall the app. Exported reports and backups may remain in folders you selected and must be deleted there separately. Support email is retained only as long as reasonably needed to resolve the request or meet legal obligations.</p></article>
+            <article><h3>Your choices and contact</h3><p>You can deny camera or file permissions in device settings, disable scheduled backups, delete local records and choose whether to send a support email. Privacy questions can be sent to <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.</p></article>
           </div>
         </section>
 
-        <section className="section privacy-section" id="privacy">
-          <div className="privacy-intro">
-            <ShieldCheck aria-hidden="true" size={30} />
-            <span className="eyebrow">Local by default</span>
-            <h2>Your inventory stays with your device.</h2>
-            <p>
-              Stokta keeps profile information, settings, inventory, audit history, reports, and backups locally on the device.
-            </p>
-          </div>
-          <div className="privacy-grid">
-            <article>
-              <span className="privacy-label">Files</span>
-              <h3>Access follows your action.</h3>
-              <p>Files are accessed only when you initiate an import, export, backup, or restore operation.</p>
-            </article>
-            <article>
-              <span className="privacy-label">Camera</span>
-              <h3>Frames are not saved.</h3>
-              <p>Camera imagery is processed for barcode recognition and is not stored by Stokta.</p>
-            </article>
-            <article>
-              <span className="privacy-label">Backups</span>
-              <h3>Local and deliberate.</h3>
-              <p>Automatic backups are optional. Restoring a selected backup presents a clear warning before replacing the current inventory.</p>
-            </article>
+        <section className="section terms-section" id="terms">
+          <div className="legal-heading"><span className="eyebrow eyebrow-on-dark">Terms of use</span><h2>Clear terms for a practical tool.</h2><p>Effective September 9, 2026</p></div>
+          <div className="legal-copy">
+            <article><h3>License and acceptable use</h3><p>Demir Software grants you a limited, revocable, non-exclusive and non-transferable license to use Stokta for lawful inventory management. You may not reverse engineer the app where prohibited, interfere with its operation, bypass platform security or use it to violate another person’s rights.</p></article>
+            <article><h3>Your data and responsibilities</h3><p>You retain responsibility for the accuracy, legality and availability of data you enter or import. Review imports, reports and stock changes before relying on them, maintain appropriate device access controls and keep independent backups suitable for your business needs.</p></article>
+            <article><h3>Availability and updates</h3><p>Features may change as Stokta is improved. Background backup timing is controlled by iOS or Android and cannot be guaranteed at an exact time. App-store terms and device requirements also apply to downloads, updates and purchases.</p></article>
+            <article><h3>No professional advice</h3><p>Stokta is an inventory utility, not accounting, tax, legal or compliance advice. Generated files and reports should be reviewed before they are used for financial, regulatory or operational decisions.</p></article>
+            <article><h3>Warranty and liability</h3><p>To the extent permitted by applicable law, Stokta is provided “as is” without warranties that it will be uninterrupted or error-free. Demir Software is not liable for indirect, incidental or consequential loss, including lost profits or data. Rights that cannot legally be excluded remain unaffected.</p></article>
+            <article><h3>Changes, termination and law</h3><p>You may stop using Stokta at any time. We may suspend access for material misuse and may update these terms with a revised effective date. These terms are governed by the laws of the Republic of Türkiye, without limiting mandatory consumer protections in your place of residence.</p></article>
           </div>
         </section>
 
-        <section className="closing-section">
-          <div className="closing-mark"><BrandMark size={56} /></div>
-          <span className="eyebrow eyebrow-on-dark">Stock · simple · sorted</span>
-          <h2>Inventory without the detour.</h2>
-          <p>Real stores, real quantities, and the tools to keep both organized—without inventing a cloud workflow.</p>
-          <a className="button button-light" href="#product">View the interface <ArrowRight aria-hidden="true" size={18} /></a>
+        <section className="section support-section" id="support">
+          <div className="support-intro"><span className="eyebrow">Support</span><h2>Tell us what is getting in the way.</h2><p>Include the platform, the action you were taking and any error message. Please do not include passwords, private inventory files or sensitive business data.</p><a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a></div>
+          <SupportForm />
         </section>
+
+        <section className="closing-section"><div className="closing-mark"><BrandMark size={56} /></div><span className="eyebrow eyebrow-on-dark">Stock · simple · sorted</span><h2>Inventory without the detour.</h2><p>Up to ten stores, one hundred thousand products and the local tools to keep both under control.</p><div className="store-buttons store-buttons-light"><StoreButton store="apple" /><StoreButton store="google" /></div></section>
       </main>
 
-      <footer className="site-footer">
-        <div className="brand-lockup brand-lockup-footer"><BrandMark size={30} /><span>Stokta</span></div>
-        <p>© 2026 Demir Software</p>
-        <div>
-          <a href="#features">Features</a>
-          <a href="#privacy">Privacy context</a>
-        </div>
-      </footer>
+      <footer className="site-footer"><a className="brand-lockup brand-lockup-footer" href="#top"><BrandMark size={30} /><span>Stokta</span></a><p>© 2026 Demir Software</p><div><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="#support">Support</a></div></footer>
     </div>
   );
 }
