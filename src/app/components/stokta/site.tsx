@@ -15,7 +15,7 @@ import {
   Store,
   X,
 } from "lucide-react";
-import { IPhoneDemo } from "./iphone-demo";
+import { IPhoneDemo } from "./iphone-app-demo";
 
 const APP_STORE_URL = "https://apps.apple.com/us/search?term=Stokta";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/search?q=Stokta&c=apps";
@@ -100,12 +100,14 @@ export function ShowcaseSite() {
     <div className="site-shell">
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="site-header">
-        <a aria-label="Stokta home" className="brand-lockup" href="#top" onClick={closeMenu}><BrandMark size={34} /><span>Stokta</span></a>
-        <button aria-controls="primary-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? "Close navigation" : "Open navigation"} className="nav-toggle" onClick={() => setMenuOpen((open) => !open)} type="button">{menuOpen ? <X size={20} /> : <Menu size={20} />}</button>
-        <nav className={menuOpen ? "is-open" : ""} id="primary-navigation" aria-label="Primary navigation">
-          <a href="#demo" onClick={closeMenu}>App demo</a><a href="#features" onClick={closeMenu}>Features</a><a href="#privacy" onClick={closeMenu}>Privacy</a><a href="#terms" onClick={closeMenu}>Terms</a><a href="#support" onClick={closeMenu}>Support</a>
-        </nav>
-        <a className="header-action" href="#download">Download</a>
+        <div className="header-inner">
+          <a aria-label="Stokta home" className="brand-lockup" href="#top" onClick={closeMenu}><BrandMark size={34} /><span>Stokta</span></a>
+          <button aria-controls="primary-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? "Close navigation" : "Open navigation"} className="nav-toggle" onClick={() => setMenuOpen((open) => !open)} type="button">{menuOpen ? <X size={20} /> : <Menu size={20} />}</button>
+          <nav className={menuOpen ? "is-open" : ""} id="primary-navigation" aria-label="Primary navigation">
+            <a href="#demo" onClick={closeMenu}>App demo</a><a href="#features" onClick={closeMenu}>Features</a><a href="#privacy" onClick={closeMenu}>Privacy</a><a href="#terms" onClick={closeMenu}>Terms</a><a href="#support" onClick={closeMenu}>Support</a>
+          </nav>
+          <a className="header-action" href="#download">Download</a>
+        </div>
       </header>
 
       <main id="main-content">
