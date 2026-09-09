@@ -1,178 +1,377 @@
+import { useState } from "react";
 import {
-  ScanLine, Boxes, TriangleAlert, Store as StoreIcon, FileText, WifiOff,
-  Check, Apple, Play,
+  ArrowRight,
+  Barcode,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  FileSpreadsheet,
+  FileText,
+  Gauge,
+  Languages,
+  PackagePlus,
+  Palette,
+  RotateCcw,
+  ScanLine,
+  ShieldCheck,
+  Store,
 } from "lucide-react";
-import { C, FONT } from "./tokens";
-import { StoktaMark } from "./ui";
-import { IPhone } from "./appdemo";
+import homeScreenshot from "../../../assets/screenshots/home.png";
+import productsScreenshot from "../../../assets/screenshots/products.png";
+import scannerScreenshot from "../../../assets/screenshots/scanner.jpg";
+import storesScreenshot from "../../../assets/screenshots/stores.png";
+import appearanceScreenshot from "../../../assets/screenshots/appearance.png";
+import backupScreenshot from "../../../assets/screenshots/backup-restore.png";
 
-const MONO_LABEL = { fontFamily: FONT.mono, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase" as const };
+const screenshots = [
+  {
+    label: "Home",
+    src: homeScreenshot,
+    alt: "Stokta home dashboard showing 24 store-products, 886 total units, 8 low-stock items, 3 active stores, and recent activity.",
+    description: "A compact pulse on stock, reports, backups, and recent movement.",
+  },
+  {
+    label: "Products",
+    src: productsScreenshot,
+    alt: "Stokta product inventory for Main Store with search, add, scan, sort, import, export, quantities, and stock status indicators.",
+    description: "Search, scan, sort, import, and export from one focused inventory view.",
+  },
+  {
+    label: "Scanner",
+    src: scannerScreenshot,
+    alt: "Stokta full-screen barcode scanner with a camera preview and a clear alignment frame.",
+    description: "A full-screen scanner built for fast product creation and lookup.",
+  },
+  {
+    label: "Stores",
+    src: storesScreenshot,
+    alt: "Stokta stores overview showing Ankara Branch, Istanbul Depot, and Main Store with independent quantities and low-stock counts.",
+    description: "Each location keeps its own SKUs, quantities, and low-stock count.",
+  },
+  {
+    label: "Appearance",
+    src: appearanceScreenshot,
+    alt: "Stokta appearance settings for theme, interface font, text size, density, and contrast.",
+    description: "Theme, typography, scale, density, contrast, and motion adapt to the team.",
+  },
+  {
+    label: "Backups",
+    src: backupScreenshot,
+    alt: "Stokta backup and restore screen with optional automatic backups, back up now, and choose backup file controls.",
+    description: "Optional daily local CSV backups with a warned, user-selected rollback flow.",
+  },
+] as const;
 
-// dark-section palette (monochrome)
-const D = {
-  text: "#ffffff",
-  muted: "rgba(255,255,255,0.62)",
-  faint: "rgba(255,255,255,0.42)",
-  border: "rgba(255,255,255,0.14)",
-  hair: "rgba(255,255,255,0.10)",
-  card: "rgba(255,255,255,0.05)",
-};
+const features = [
+  {
+    icon: PackagePlus,
+    title: "Add products your way",
+    body: "Create products manually or use the camera to add and find them by barcode without breaking your stockroom rhythm.",
+  },
+  {
+    icon: Store,
+    title: "Independent store inventory",
+    body: "Keep SKUs and quantities separate for as many as 10 stores, then move between locations from a single workspace.",
+  },
+  {
+    icon: Barcode,
+    title: "Find what needs attention",
+    body: "Search and sort the catalogue while low-stock and out-of-stock indicators make the next action obvious.",
+  },
+  {
+    icon: FileSpreadsheet,
+    title: "Local file workflows",
+    body: "Import and export CSV or Excel files only when you choose. There are no cloud-drive integrations in the workflow.",
+  },
+  {
+    icon: RotateCcw,
+    title: "Back up, then roll back",
+    body: "Enable optional daily local CSV backups, create one on demand, or select a backup for a clearly warned full rollback.",
+  },
+  {
+    icon: FileText,
+    title: "Reports that fit the question",
+    body: "Generate and preview PDF inventory reports for Today, 7 days, 30 days, 3 months, or 6 months, with recent history close by.",
+  },
+  {
+    icon: ScanLine,
+    title: "Guidance from the first scan",
+    body: "A focused onboarding flow and six-step in-app tour introduce products, scanning, stores, profile, customization, and data tools.",
+  },
+  {
+    icon: Palette,
+    title: "An interface that adapts",
+    body: "Choose theme, typeface, text size, density, contrast, inventory display, haptics, and reduced-motion behavior.",
+  },
+] as const;
 
-function StoreBadge({ icon, sub, main, invert }: { icon: React.ReactNode; sub: string; main: string; invert?: boolean }) {
+const languages = [
+  "English",
+  "Türkçe",
+  "O‘zbekcha",
+  "Қазақша",
+  "Кыргызча",
+  "Русский",
+  "Azərbaycanca",
+] as const;
+
+function BrandMark({ size = 36 }: { size?: number }) {
+  const bars = [4, 7, 10, 14, 18, 21, 25, 28, 32];
+
   return (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: invert ? "#fff" : C.ink, color: invert ? C.ink : "#fff", borderRadius: 12, padding: "9px 16px" }}>
-      {icon}
-      <div style={{ textAlign: "left", lineHeight: 1.1 }}>
-        <div style={{ fontFamily: FONT.body, fontSize: 10, opacity: 0.6 }}>{sub}</div>
-        <div style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: 16 }}>{main}</div>
-      </div>
-    </div>
+    <svg
+      aria-hidden="true"
+      className="brand-mark"
+      height={size}
+      viewBox="0 0 40 40"
+      width={size}
+    >
+      <rect fill="currentColor" height="40" rx="9" width="40" />
+      {bars.map((x, index) => (
+        <rect
+          fill="var(--paper)"
+          height="15"
+          key={x}
+          opacity={index % 2 === 0 ? 0.95 : 0.48}
+          width={index % 3 === 0 ? 2.6 : 1.5}
+          x={x}
+          y="9"
+        />
+      ))}
+      <rect fill="var(--paper)" height="2" opacity="0.9" rx="1" width="32" x="4" y="18" />
+      <rect fill="var(--paper)" height="1.6" opacity="0.24" rx="0.8" width="25" x="5" y="28" />
+      <rect fill="var(--paper)" height="1.6" opacity="0.14" rx="0.8" width="15" x="5" y="31.5" />
+    </svg>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════
-export function ShowcaseSite({ onDocs }: { onDemo: () => void; onDocs: () => void }) {
-  const features = [
-    { icon: ScanLine, title: "Barcode scanning", body: "Point, scan, done. Add or adjust stock in seconds with the camera — no keyboard, no lag." },
-    { icon: Boxes, title: "Inventory tracking", body: "Live quantities across every product, with a running history of every entry and exit." },
-    { icon: TriangleAlert, title: "Stock control", body: "Low-stock thresholds surface what needs reordering before you run out." },
-    { icon: StoreIcon, title: "Multi-store", body: "Independent SKUs and quantities per location, switchable from a single tap." },
-    { icon: FileText, title: "Reports & export", body: "Generate inventory reports and export to Excel, CSV, or the cloud in one action." },
-    { icon: WifiOff, title: "Fully offline", body: "Everything works with zero connection. Cloud sync is optional, never required." },
-  ];
+function ProductCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = screenshots[activeIndex];
 
-  const steps = [
-    { n: "01", t: "Scan a barcode", d: "The camera reads the code and pulls up the product instantly." },
-    { n: "02", t: "Adjust the count", d: "Log an entry or exit. Stock levels update the moment you confirm." },
-    { n: "03", t: "Stay ahead", d: "Low-stock flags and reports keep the whole warehouse in order." },
-  ];
+  const selectRelative = (difference: number) => {
+    setActiveIndex((current) => (current + difference + screenshots.length) % screenshots.length);
+  };
 
   return (
-    <div style={{ background: C.ink, color: D.text, fontFamily: FONT.body, minHeight: "100vh" }}>
-
-      {/* ═══ WHITE HEAD (nav + hero) ═══ */}
-      <div style={{ background: C.bg, color: C.ink }}>
-        {/* NAV — centered logo + title */}
-        <header style={{ position: "sticky", top: 0, zIndex: 30, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: `1px solid ${C.hairline}` }}>
-          <div style={{ maxWidth: 1120, margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: 11 }}>
-            <StoktaMark size={30} />
-            <span style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: 21, letterSpacing: "-0.015em" }}>Stokta</span>
+    <section aria-labelledby="product-title" className="product-stage" id="product">
+      <div className="phone-wrap">
+        <div className="phone-shadow" aria-hidden="true" />
+        <div className="phone-shell">
+          <div className="phone-speaker" aria-hidden="true" />
+          <div className="phone-screen" id="product-panel" role="tabpanel">
+            <img
+              alt={active.alt}
+              className="phone-screenshot"
+              decoding="async"
+              height="2868"
+              key={active.src}
+              loading={activeIndex === 0 ? "eager" : "lazy"}
+              src={active.src}
+              width="1320"
+            />
           </div>
-        </header>
-
-        {/* HERO */}
-        <section style={{ maxWidth: 1120, margin: "0 auto", padding: "64px 24px 72px", display: "grid", gridTemplateColumns: "1fr 420px", gap: 40, alignItems: "center" }} className="stk-hero">
-          <div style={{ minWidth: 0 }}>
-            <span style={{ ...MONO_LABEL, color: C.faint, display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid ${C.border}`, borderRadius: 999, padding: "6px 12px", marginBottom: 24 }}>
-              <span style={{ width: 6, height: 6, borderRadius: 999, background: C.ink }} /> Stock · Simple · Sorted
-            </span>
-            <h1 style={{ fontFamily: FONT.display, fontWeight: 800, fontSize: "clamp(38px, 5.5vw, 64px)", lineHeight: 1.03, letterSpacing: "-0.03em", margin: "0 0 20px" }}>
-              The whole warehouse, in your pocket.
-            </h1>
-            <p style={{ fontFamily: FONT.body, fontSize: 18, lineHeight: 1.6, color: C.muted, maxWidth: "46ch", margin: "0 0 30px" }}>
-              Stokta is a barcode-first stock manager for small teams. Scan, track, and control inventory across every store — fast, minimal, and fully offline.
-            </p>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <StoreBadge icon={<Apple size={18} />} sub="Download on the" main="App Store" />
-              <StoreBadge icon={<Play size={16} />} sub="Get it on" main="Google Play" />
-            </div>
-          </div>
-
-          {/* live iPhone 17 Pro */}
-          <div style={{ display: "flex", justifyContent: "center", minWidth: 0 }} className="stk-hero-phone">
-            <IPhone scale={0.66} />
-          </div>
-        </section>
+        </div>
       </div>
 
-      {/* ═══ BLACK BODY ═══ */}
-
-      {/* FEATURES */}
-      <section id="features" style={{ maxWidth: 1120, margin: "0 auto", padding: "88px 24px" }}>
-        <p style={{ ...MONO_LABEL, color: D.faint, margin: "0 0 14px" }}>Everything you need</p>
-        <h2 style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: "clamp(28px,4vw,42px)", letterSpacing: "-0.025em", margin: "0 0 12px", maxWidth: "18ch" }}>
-          Built for the messy reality of a stockroom.
-        </h2>
-        <p style={{ fontFamily: FONT.body, fontSize: 17, color: D.muted, maxWidth: "52ch", margin: "0 0 44px" }}>
-          Six focused tools, one calm interface. No dashboards you'll never open.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
-          {features.map(({ icon: Icon, title, body }) => (
-            <div key={title} style={{ background: D.card, border: `1px solid ${D.border}`, borderRadius: 18, padding: 24 }}>
-              <span style={{ width: 44, height: 44, borderRadius: 12, background: "#fff", color: C.ink, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
-                <Icon size={21} />
-              </span>
-              <h3 style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: 20, letterSpacing: "-0.015em", margin: "0 0 8px", color: D.text }}>{title}</h3>
-              <p style={{ fontFamily: FONT.body, fontSize: 15, lineHeight: 1.6, color: D.muted, margin: 0 }}>{body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section id="how" style={{ maxWidth: 1120, margin: "0 auto", padding: "40px 24px 88px" }}>
-        <p style={{ ...MONO_LABEL, color: D.faint, margin: "0 0 14px" }}>How it works</p>
-        <h2 style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: "clamp(28px,4vw,42px)", letterSpacing: "-0.025em", margin: "0 0 48px", maxWidth: "16ch" }}>
-          From shelf to sorted in three steps.
-        </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
-          {steps.map((s) => (
-            <div key={s.n} style={{ borderTop: `1px solid ${D.border}`, paddingTop: 22 }}>
-              <span style={{ fontFamily: FONT.mono, fontSize: 14, color: D.faint, letterSpacing: "0.1em" }}>{s.n}</span>
-              <h3 style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: 23, letterSpacing: "-0.02em", margin: "14px 0 8px" }}>{s.t}</h3>
-              <p style={{ fontFamily: FONT.body, fontSize: 15, lineHeight: 1.6, color: D.muted, margin: 0 }}>{s.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section style={{ maxWidth: 1120, margin: "0 auto", padding: "0 24px 88px" }}>
-        <div style={{ background: D.card, border: `1px solid ${D.border}`, borderRadius: 28, padding: "clamp(40px,6vw,72px)", textAlign: "center" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}><StoktaMark size={56} /></div>
-          <h2 style={{ fontFamily: FONT.display, fontWeight: 800, fontSize: "clamp(30px,5vw,52px)", letterSpacing: "-0.03em", margin: "0 0 16px" }}>
-            Take control of your stock today.
-          </h2>
-          <p style={{ fontFamily: FONT.body, fontSize: 18, color: D.muted, maxWidth: "44ch", margin: "0 auto 32px" }}>
-            Free to try, works offline, and respects your data. No account required to start.
-          </p>
-          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-            <StoreBadge invert icon={<Apple size={18} />} sub="Download on the" main="App Store" />
-            <StoreBadge invert icon={<Play size={16} />} sub="Get it on" main="Google Play" />
+      <div className="product-controls">
+        <div className="carousel-heading">
+          <div aria-live="polite">
+            <span className="eyebrow eyebrow-dark">Real product screens</span>
+            <h2 id="product-title">{active.label}</h2>
           </div>
-          <div style={{ display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap", marginTop: 32 }}>
-            {["No sign-up", "Offline-first", "Excel & CSV export"].map((t) => (
-              <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: FONT.body, fontSize: 14, color: D.muted }}>
-                <Check size={15} /> {t}
-              </span>
+          <div className="arrow-controls">
+            <button aria-label="Show previous screen" onClick={() => selectRelative(-1)} type="button">
+              <ChevronLeft aria-hidden="true" size={18} />
+            </button>
+            <button aria-label="Show next screen" onClick={() => selectRelative(1)} type="button">
+              <ChevronRight aria-hidden="true" size={18} />
+            </button>
+          </div>
+        </div>
+        <p className="product-description">{active.description}</p>
+        <div aria-label="Choose an app screen" className="screen-tabs" role="tablist">
+          {screenshots.map((screen, index) => (
+            <button
+              aria-controls="product-panel"
+              aria-selected={index === activeIndex}
+              className={index === activeIndex ? "is-active" : undefined}
+              key={screen.label}
+              onClick={() => setActiveIndex(index)}
+              role="tab"
+              type="button"
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {screen.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ShowcaseSite() {
+  return (
+    <div className="site-shell">
+      <a className="skip-link" href="#main-content">Skip to content</a>
+
+      <header className="site-header">
+        <a aria-label="Stokta home" className="brand-lockup" href="#top">
+          <BrandMark size={34} />
+          <span>Stokta</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="#features">Features</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#privacy">Privacy</a>
+        </nav>
+        <a className="header-action" href="#product">View the app</a>
+      </header>
+
+      <main id="main-content">
+        <section className="hero" id="top">
+          <div className="hero-copy">
+            <span className="eyebrow"><span className="status-dot" /> Local-first inventory</span>
+            <h1>Know what is in stock. Everywhere.</h1>
+            <p className="hero-lede">
+              Stokta keeps products, quantities, reports, and backups close to the people doing the work—fast to scan, clear to review, and local to the device.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-primary" href="#product">
+                Explore real screens <ArrowRight aria-hidden="true" size={18} />
+              </a>
+              <a className="button button-secondary" href="#features">See what it does</a>
+            </div>
+            <ul aria-label="Product highlights" className="hero-notes">
+              <li><Check aria-hidden="true" size={15} /> Up to 10 stores</li>
+              <li><Check aria-hidden="true" size={15} /> Local CSV &amp; Excel</li>
+              <li><Check aria-hidden="true" size={15} /> 7 interface languages</li>
+            </ul>
+          </div>
+
+          <ProductCarousel />
+        </section>
+
+        <section aria-label="Current inventory snapshot" className="metric-strip">
+          <dl>
+            <div><dt>Store-products</dt><dd>24</dd></div>
+            <div><dt>Total units</dt><dd>886</dd></div>
+            <div><dt>Low stock</dt><dd>8</dd></div>
+            <div><dt>Active stores</dt><dd>3</dd></div>
+          </dl>
+        </section>
+
+        <section className="section section-dark" id="features">
+          <div className="section-heading">
+            <span className="eyebrow eyebrow-on-dark">One calm inventory system</span>
+            <h2>Built around the work, not around a dashboard.</h2>
+            <p>From the first barcode to a six-month report, every tool stays focused and close at hand.</p>
+          </div>
+          <div className="feature-grid">
+            {features.map(({ icon: Icon, title, body }, index) => (
+              <article className="feature-card" key={title}>
+                <div className="feature-index">{String(index + 1).padStart(2, "0")}</div>
+                <Icon aria-hidden="true" className="feature-icon" size={22} />
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </article>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: `1px solid ${D.hair}` }}>
-        <div style={{ maxWidth: 1120, margin: "0 auto", padding: "36px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <StoktaMark size={26} />
-            <span style={{ fontFamily: FONT.display, fontWeight: 700, fontSize: 17 }}>Stokta</span>
+        <section className="section workflow-section" id="workflow">
+          <div className="section-heading section-heading-ink">
+            <span className="eyebrow">A shorter path through stock</span>
+            <h2>Capture. Control. Keep a local record.</h2>
           </div>
-          <span style={{ fontFamily: FONT.mono, fontSize: 12, color: D.faint, letterSpacing: "0.04em" }}>© 2026 Demir Software · Built to be self-hosted</span>
-          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-            <a href="#privacy" style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 14, color: D.muted, textDecoration: "none" }}>Privacy Policy</a>
-            <a href="#terms" style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 14, color: D.muted, textDecoration: "none" }}>Terms &amp; Conditions</a>
-            <button onClick={onDocs} style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 14, color: D.muted, background: "none", border: "none", cursor: "pointer" }}>Brand guide</button>
+          <ol className="workflow-list">
+            <li>
+              <span className="workflow-number">01</span>
+              <div>
+                <h3>Add or find the product</h3>
+                <p>Enter product details manually or point the camera at a barcode for a faster lookup.</p>
+              </div>
+            </li>
+            <li>
+              <span className="workflow-number">02</span>
+              <div>
+                <h3>Work in the right store</h3>
+                <p>Adjust that location’s quantity while search, sorting, and stock indicators keep the catalogue readable.</p>
+              </div>
+            </li>
+            <li>
+              <span className="workflow-number">03</span>
+              <div>
+                <h3>Report or protect the result</h3>
+                <p>Export local files, create a PDF report, or make a device backup before a warned rollback.</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <section className="preference-band">
+          <div>
+            <span className="eyebrow eyebrow-on-dark">Made for different teams</span>
+            <h2>Readable, adaptable, multilingual.</h2>
+            <p>
+              Space Grotesk gives the interface its compact modern-retro voice. In the app, teams can also choose IBM Plex Sans or Atkinson Hyperlegible, then tune text size, density, contrast, haptics, inventory rows, and reduced motion.
+            </p>
           </div>
+          <div className="language-panel">
+            <Languages aria-hidden="true" size={26} />
+            <h3>Seven interface languages</h3>
+            <ul>
+              {languages.map((language) => <li key={language}>{language}</li>)}
+            </ul>
+          </div>
+        </section>
+
+        <section className="section privacy-section" id="privacy">
+          <div className="privacy-intro">
+            <ShieldCheck aria-hidden="true" size={30} />
+            <span className="eyebrow">Local by default</span>
+            <h2>Your inventory stays with your device.</h2>
+            <p>
+              Stokta keeps profile information, settings, inventory, audit history, reports, and backups locally on the device.
+            </p>
+          </div>
+          <div className="privacy-grid">
+            <article>
+              <span className="privacy-label">Files</span>
+              <h3>Access follows your action.</h3>
+              <p>Files are accessed only when you initiate an import, export, backup, or restore operation.</p>
+            </article>
+            <article>
+              <span className="privacy-label">Camera</span>
+              <h3>Frames are not saved.</h3>
+              <p>Camera imagery is processed for barcode recognition and is not stored by Stokta.</p>
+            </article>
+            <article>
+              <span className="privacy-label">Backups</span>
+              <h3>Local and deliberate.</h3>
+              <p>Automatic backups are optional. Restoring a selected backup presents a clear warning before replacing the current inventory.</p>
+            </article>
+          </div>
+        </section>
+
+        <section className="closing-section">
+          <div className="closing-mark"><BrandMark size={56} /></div>
+          <span className="eyebrow eyebrow-on-dark">Stock · simple · sorted</span>
+          <h2>Inventory without the detour.</h2>
+          <p>Real stores, real quantities, and the tools to keep both organized—without inventing a cloud workflow.</p>
+          <a className="button button-light" href="#product">View the interface <ArrowRight aria-hidden="true" size={18} /></a>
+        </section>
+      </main>
+
+      <footer className="site-footer">
+        <div className="brand-lockup brand-lockup-footer"><BrandMark size={30} /><span>Stokta</span></div>
+        <p>© 2026 Demir Software</p>
+        <div>
+          <a href="#features">Features</a>
+          <a href="#privacy">Privacy context</a>
         </div>
       </footer>
-
-      {/* responsive rules inline styles can't express */}
-      <style>{`
-        @media (max-width: 900px) {
-          .stk-hero { grid-template-columns: 1fr !important; gap: 8px !important; }
-          .stk-hero-phone { margin-top: 8px; }
-        }
-      `}</style>
     </div>
   );
 }
