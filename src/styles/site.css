@@ -50,7 +50,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* Interactive phone */
 .interactive-demo { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .demo-caption { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 14px; color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
-.demo-hint { margin: 15px 0 0; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em; text-align: center; }
 .iphone-device { position: relative; width: 328px; height: 710px; padding: 10px; border: 1px solid #5c5956; border-radius: 55px; background: linear-gradient(145deg, #686562, #201f1f 28%, #353331 72%, #77736f); box-shadow: 0 50px 100px rgba(20, 19, 19, 0.3), inset 0 0 0 1px rgba(255,255,255,0.12); }
 .iphone-button { position: absolute; left: -4px; width: 4px; border-radius: 3px 0 0 3px; background: #4b4947; }
 .iphone-button-one { top: 130px; height: 35px; }
