@@ -28,8 +28,8 @@ export function BrandPage() {
             <h1>Stokta,<br />visually.</h1>
           </div>
           <div className="subpage-hero-copy">
-            <p>A practical identity built from barcode geometry, high-contrast neutrals and typography that separates action from inventory data.</p>
-            <span>Brand reference · Version 1.0</span>
+            <p>A practical identity built from barcode geometry, high-contrast neutrals and one clear interface typeface.</p>
+            <span>Brand reference · Version 2.0</span>
           </div>
         </section>
 
@@ -51,11 +51,9 @@ export function BrandPage() {
         </section>
 
         <section className="brand-section brand-type-section">
-          <div className="brand-section-heading"><span className="eyebrow">03 · Typefaces</span><h2>Voice, reading and data.</h2><p>Each font has one job, producing a system that feels expressive without compromising operational clarity.</p></div>
-          <div className="type-grid">
-            <article className="type-card font-outfit"><span><Type aria-hidden="true" size={19} /> Display and actions</span><strong>Outfit</strong><p>Inventory without the detour.</p><small>Headings · product names · buttons · navigation</small></article>
-            <article className="type-card font-mulish"><span><Type aria-hidden="true" size={19} /> Reading</span><strong>Mulish</strong><p>Clear descriptions for everyday inventory work.</p><small>Body copy · descriptions · settings · inputs</small></article>
-            <article className="type-card font-jetbrains"><span><Type aria-hidden="true" size={19} /> Inventory data</span><strong>JetBrains Mono</strong><p>MAIN · SKU-001 · 8691000000084 · 126</p><small>Codes · barcodes · quantities · dates · metadata</small></article>
+          <div className="brand-section-heading"><span className="eyebrow">03 · Typeface</span><h2>One family. One clear voice.</h2><p>IBM Plex Sans carries the complete Stokta interface, from navigation and actions to product names, quantities and supporting text.</p></div>
+          <div className="type-grid type-grid-single">
+            <article className="type-card font-plex-sans"><span><Type aria-hidden="true" size={19} /> Application typeface</span><strong>IBM Plex Sans</strong><p>Inventory without the detour.</p><small>Regular · Medium · Semibold · Bold</small></article>
           </div>
         </section>
 

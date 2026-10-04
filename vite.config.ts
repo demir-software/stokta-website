@@ -23,6 +23,8 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, 'index.html'),
         legal: path.resolve(__dirname, 'legal/index.html'),
+        privacy: path.resolve(__dirname, 'privacy/index.html'),
+        terms: path.resolve(__dirname, 'terms/index.html'),
         brand: path.resolve(__dirname, 'brand/index.html'),
       },
     },

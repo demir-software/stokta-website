@@ -4,18 +4,24 @@ import {
   Activity,
   ArrowLeft,
   Barcode,
+  BellRing,
   Boxes,
   Check,
   ChevronDown,
   ChevronRight,
+  Cloud,
   DatabaseBackup,
+  FileImage,
+  FileSpreadsheet,
   FileDown,
   FileText,
   FileUp,
+  HardDrive,
   Home,
   Languages,
   ListFilter,
   Moon,
+  Monitor,
   MoreHorizontal,
   Package,
   Palette,
@@ -24,16 +30,19 @@ import {
   ScanLine,
   Search,
   Settings,
+  ShieldCheck,
   Store,
   Sun,
   UserRound,
+  Users,
   Vibrate,
   X,
 } from "lucide-react";
 
-type Tab = "home" | "products" | "stores" | "settings";
-type SettingsView = "root" | "appearance" | "reports" | "backups" | "transfer" | "language";
-type Overlay = "scan" | "add-product" | "files" | "add-store" | null;
+type Tab = "home" | "products" | "stores" | "team" | "settings";
+type SettingsView = "root" | "appearance" | "reports" | "backups" | "transfer" | "language" | "plans";
+type Overlay = "scan" | "add-product" | "files" | "product-actions" | "add-store" | null;
+type ThemeMode = "system" | "light" | "dark";
 
 type ProductItem = {
   barcode: string;
@@ -59,10 +68,11 @@ const navItems = [
   { id: "home", label: "Home", icon: Home },
   { id: "products", label: "Products", icon: Package },
   { id: "stores", label: "Stores", icon: Store },
+  { id: "team", label: "Team", icon: Users },
   { id: "settings", label: "Settings", icon: Settings },
 ] as const;
 
-const reportPeriods = ["Today", "7d", "30d", "3m", "6m"] as const;
+const reportPeriods = ["Today", "7d", "30d", "3m", "6m", "1y"] as const;
 
 function AppMark() {
   return <span className="app-mini-mark" aria-hidden="true"><Barcode size={14} /></span>;
@@ -78,25 +88,22 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function HomeScreen({ openSettings }: { openSettings: (view: SettingsView) => void }) {
   const metrics = [
-    { icon: Package, label: "Total products", value: "24" },
-    { icon: Boxes, label: "Total units", value: "886" },
-    { icon: Activity, label: "Low stock products", value: "8" },
     { icon: Store, label: "Active stores", value: "3" },
+    { icon: Boxes, label: "Products", value: "8" },
+    { icon: Activity, label: "Low stock", value: "8" },
   ];
 
   return (
     <div className="app-page app-home-page">
       <div className="app-page-heading"><h3>Inventory</h3><p>Overview of your stock right now.</p></div>
-      <div className="app-metric-list">
+      <div className="app-metric-list app-metric-grid">
         {metrics.map(({ icon: Icon, label, value }) => <div className="app-metric-row" key={label}><span><Icon size={15} /></span><strong>{label}</strong><b>{value}</b></div>)}
       </div>
-      <section className="app-resource-section">
-        <SectionLabel>LAST GENERATED REPORT</SectionLabel>
-        <button className="app-resource-row" onClick={() => openSettings("reports")} type="button"><span><FileText size={15} /></span><p><strong>Inventory report</strong><small>30 days · PDF · 48 KB</small></p><ChevronRight size={14} /></button>
-      </section>
-      <section className="app-resource-section">
-        <SectionLabel>EXISTING BACKUPS</SectionLabel>
-        <button className="app-resource-row" onClick={() => openSettings("backups")} type="button"><span><DatabaseBackup size={15} /></span><p><strong>stokta-backup-2026-09-09.csv</strong><small>Today · 32 KB</small></p><ChevronRight size={14} /></button>
+      <section className="app-stock-chart" aria-label="Stock by store">
+        <div><strong>Stock by store</strong><small>Current units</small></div>
+        <p><span>Main Store</span><i style={{ width: "60%" }} /><b>266</b></p>
+        <p><span>Istanbul</span><i style={{ width: "100%" }} /><b>435</b></p>
+        <p><span>Ankara</span><i style={{ width: "39%" }} /><b>173</b></p>
       </section>
       <section className="app-resource-section">
         <SectionLabel>RECENT ACTIVITY</SectionLabel>
@@ -104,6 +111,14 @@ function HomeScreen({ openSettings }: { openSettings: (view: SettingsView) => vo
           <div><span>+12</span><p><strong>Barcode Printer Ribbon</strong><small>Main Store · 2h ago</small></p></div>
           <div><span>−2</span><p><strong>Packing Tape · Clear 48 mm</strong><small>Main Store · 5h ago</small></p></div>
         </div>
+      </section>
+      <section className="app-resource-section">
+        <SectionLabel>RECENT REPORT</SectionLabel>
+        <button className="app-resource-row" onClick={() => openSettings("reports")} type="button"><span><FileText size={15} /></span><p><strong>Inventory report</strong><small>30 days · PDF · 48 KB</small></p><ChevronRight size={14} /></button>
+      </section>
+      <section className="app-resource-section">
+        <SectionLabel>RECENT BACKUP</SectionLabel>
+        <button className="app-resource-row" onClick={() => openSettings("backups")} type="button"><span><DatabaseBackup size={15} /></span><p><strong>stokta-backup-2026-10-04.csv</strong><small>Today · 32 KB</small></p><ChevronRight size={14} /></button>
       </section>
     </div>
   );
@@ -128,7 +143,8 @@ function ProductsScreen({ openOverlay, showNotice }: { openOverlay: (overlay: Ov
         <button aria-label="Add product" className="app-action-primary" onClick={() => openOverlay("add-product")} type="button"><Plus size={15} /></button>
         <button aria-label="Scan barcode" onClick={() => openOverlay("scan")} type="button"><ScanLine size={14} /></button>
         <button aria-label="Sort products" className={quantitySort ? "is-active" : ""} onClick={() => setQuantitySort((sorted) => !sorted)} type="button"><ListFilter size={14} /></button>
-        <button aria-label="Import or export inventory" onClick={() => openOverlay("files")} type="button"><MoreHorizontal size={15} /></button>
+        <button aria-label="Import or export inventory" onClick={() => openOverlay("files")} type="button"><FileSpreadsheet size={14} /></button>
+        <button aria-label="Product actions" onClick={() => openOverlay("product-actions")} type="button"><HardDrive size={14} /></button>
       </div>
       {queryOpen && <label className="inventory-search"><Search size={14} /><span className="sr-only">Search products</span><input autoFocus onChange={(event) => setQuery(event.target.value)} placeholder="Search name, SKU, or barcode" value={query} /><button aria-label="Close search" onClick={() => { setQueryOpen(false); setQuery(""); }} type="button"><X size={13} /></button></label>}
       <div className="inventory-list">
@@ -148,18 +164,36 @@ function ProductsScreen({ openOverlay, showNotice }: { openOverlay: (overlay: Ov
 type DemoStore = { code: string; low: number; name: string; products: number; units: number };
 const initialStores: DemoStore[] = [
   { code: "MAIN", low: 4, name: "Main Store", products: 8, units: 266 },
-  { code: "IST", low: 1, name: "Istanbul Depot", products: 8, units: 447 },
+  { code: "IST", low: 1, name: "Istanbul Depot", products: 8, units: 435 },
   { code: "ANK", low: 3, name: "Ankara Branch", products: 8, units: 173 },
 ];
 
 function StoresScreen({ stores, openOverlay }: { stores: DemoStore[]; openOverlay: (overlay: Overlay) => void }) {
   return (
     <div className="app-page">
-      <div className="app-title-row"><h3>Stores</h3><button className="app-compact-primary" disabled={stores.length >= 10} onClick={() => openOverlay("add-store")} type="button"><Plus size={13} /> Add</button></div>
+      <div className="app-title-row"><h3>Stores</h3><button className="app-compact-primary" disabled={stores.length >= 20} onClick={() => openOverlay("add-store")} type="button"><Plus size={13} /> Add</button></div>
       <p className="app-page-description">Each store keeps independent SKUs and quantities.</p>
-      <span className="app-capacity">{stores.length} of 10 stores</span>
+      <span className="app-capacity">{stores.length} of 20 Pro stores</span>
       <div className="app-store-list">
         {stores.map((store) => <button className="app-store-card" key={store.code} type="button"><span className="app-store-icon"><Store size={16} /></span><p><strong>{store.name}</strong><small>{store.code}</small><em>{store.products} products · {store.units} units · {store.low} low</em></p><MoreHorizontal size={15} /></button>)}
+      </div>
+    </div>
+  );
+}
+
+function TeamScreen({ showNotice }: { showNotice: (notice: string) => void }) {
+  const people = [
+    { access: "All stores", name: "Furkan Demir", role: "Administrator" },
+    { access: "Main Store · Istanbul", name: "Aylin Kaya", role: "Personnel" },
+    { access: "Ankara Branch", name: "Kerem Yılmaz", role: "Personnel" },
+  ];
+
+  return (
+    <div className="app-page">
+      <div className="app-title-row"><h3>Team</h3><button aria-label="Add person" className="app-icon-primary" onClick={() => showNotice("Invite by email or QR code")} type="button"><Plus size={15} /></button></div>
+      <span className="app-capacity">2 of 20 personnel · 1 administrator</span>
+      <div className="app-team-list">
+        {people.map((person) => <button className="app-team-card" key={person.name} onClick={() => showNotice(`${person.name} · ${person.access}`)} type="button"><span><UserRound size={16} /></span><p><strong>{person.name}</strong><small>{person.role}</small><em>{person.access}</em></p><ChevronRight size={14} /></button>)}
       </div>
     </div>
   );
@@ -169,16 +203,14 @@ function SettingsRow({ detail, icon: Icon, label, onClick, trailing }: { detail?
   return <button className="app-settings-row" onClick={onClick} type="button"><Icon size={15} /><span><strong>{label}</strong>{detail && <small>{detail}</small>}</span>{trailing ?? <ChevronRight size={14} />}</button>;
 }
 
-function SettingsRoot({ dark, openView }: { dark: boolean; openView: (view: SettingsView) => void }) {
+function SettingsRoot({ openView, theme }: { openView: (view: SettingsView) => void; theme: ThemeMode }) {
   return (
     <div className="app-page">
-      <div className="profile-card"><span><UserRound size={19} /></span><p><strong>Stokta Showroom</strong><small>Demir Software</small></p><ChevronRight size={14} /></div>
+      <div className="profile-card"><span><UserRound size={19} /></span><p><strong>Stokta Pro</strong><small>3 synced devices · 3 stores · 2 personnel</small></p><ChevronRight size={14} /></div>
       <div className="app-page-heading settings-heading"><h3>Settings</h3></div>
-      <section className="app-settings-group"><SectionLabel>APPEARANCE</SectionLabel><SettingsRow detail={`${dark ? "Dark" : "Light"} · Space Grotesk · Comfortable`} icon={Palette} label="Theme, text & density" onClick={() => openView("appearance")} /></section>
-      <section className="app-settings-group"><SectionLabel>INVENTORY DISPLAY</SectionLabel><SettingsRow detail="Comfortable · Stock indicators on" icon={Rows3} label="Product rows & indicators" /></section>
-      <section className="app-settings-group"><SectionLabel>LANGUAGE & REGION</SectionLabel><SettingsRow detail="English" icon={Languages} label="Display language" onClick={() => openView("language")} /></section>
-      <section className="app-settings-group"><SectionLabel>DATA & REPORTS</SectionLabel><SettingsRow detail="Today to 6 months" icon={FileText} label="Reports" onClick={() => openView("reports")} /><SettingsRow detail="CSV and Excel files" icon={FileUp} label="Import / export" onClick={() => openView("transfer")} /><SettingsRow detail="Local backup and full restore" icon={DatabaseBackup} label="Backups & restore" onClick={() => openView("backups")} /></section>
-      <section className="app-settings-group"><SectionLabel>ACCESSIBILITY & INTERACTION</SectionLabel><SettingsRow icon={Vibrate} label="Haptic feedback" trailing={<span className="app-switch is-on"><i /></span>} /><SettingsRow icon={Accessibility} label="Reduce motion" trailing={<span className="app-switch"><i /></span>} /></section>
+      <section className="app-settings-group"><SectionLabel>STOKTA PRO</SectionLabel><SettingsRow detail="Monthly or yearly via the App Store" icon={ShieldCheck} label="Plan & billing" onClick={() => openView("plans")} /><SettingsRow detail="Firebase multi-device sync" icon={Cloud} label="Cloud sync" /></section>
+      <section className="app-settings-group"><SectionLabel>UI CUSTOMIZATION</SectionLabel><SettingsRow detail={`${theme[0].toUpperCase()}${theme.slice(1)} · IBM Plex Sans`} icon={Palette} label="Theme, language & layout" onClick={() => openView("appearance")} /></section>
+      <section className="app-settings-group"><SectionLabel>DATA & REPORTS</SectionLabel><SettingsRow detail="Up to one year with Pro" icon={FileText} label="Reports" onClick={() => openView("reports")} /><SettingsRow detail="Automatic local backups" icon={DatabaseBackup} label="Backups & restore" onClick={() => openView("backups")} /><SettingsRow detail="Selected-store CSV or XLSX" icon={FileSpreadsheet} label="Import / export" onClick={() => openView("transfer")} /></section>
     </div>
   );
 }
@@ -187,8 +219,8 @@ function SubviewHeading({ children, goBack }: { children: React.ReactNode; goBac
   return <><button className="settings-back" onClick={goBack} type="button"><ArrowLeft size={14} /> Settings</button><h3 className="subview-title">{children}</h3></>;
 }
 
-function AppearanceScreen({ dark, goBack, setDark }: { dark: boolean; goBack: () => void; setDark: (dark: boolean) => void }) {
-  return <div className="app-page"><SubviewHeading goBack={goBack}>Theme, text & density</SubviewHeading><SectionLabel>THEME</SectionLabel><div className="app-segments theme-segments"><button className={!dark ? "is-active" : ""} onClick={() => setDark(false)} type="button"><Sun size={13} /> Light</button><button className={dark ? "is-active" : ""} onClick={() => setDark(true)} type="button"><Moon size={13} /> Dark</button></div><section className="app-settings-group"><SectionLabel>TEXT</SectionLabel><SettingsRow detail="Current typeface" icon={Settings} label="Space Grotesk" /><SettingsRow detail="Default scale" icon={Rows3} label="100%" /></section><p className="app-helper-copy">The demo uses the same light and dark palette tokens as the current app.</p></div>;
+function AppearanceScreen({ goBack, setTheme, theme }: { goBack: () => void; setTheme: (theme: ThemeMode) => void; theme: ThemeMode }) {
+  return <div className="app-page"><SubviewHeading goBack={goBack}>UI customization</SubviewHeading><section className="app-settings-group"><SectionLabel>DISPLAY</SectionLabel><SettingsRow icon={Sun} label="Theme" trailing={<span>{`${theme[0].toUpperCase()}${theme.slice(1)}`} <ChevronRight size={14} /></span>} /><div className="app-segments theme-segments"><button className={theme === "system" ? "is-active" : ""} onClick={() => setTheme("system")} type="button"><Monitor size={13} /> System</button><button className={theme === "light" ? "is-active" : ""} onClick={() => setTheme("light")} type="button"><Sun size={13} /> Light</button><button className={theme === "dark" ? "is-active" : ""} onClick={() => setTheme("dark")} type="button"><Moon size={13} /> Dark</button></div><SettingsRow icon={Languages} label="Language" onClick={() => undefined} trailing={<span>English <ChevronRight size={14} /></span>} /><SettingsRow icon={Rows3} label="Density" trailing={<span>Comfortable <ChevronRight size={14} /></span>} /><SettingsRow icon={Settings} label="Font size" trailing={<span>Standard <ChevronRight size={14} /></span>} /><SettingsRow icon={Accessibility} label="Contrast" trailing={<span>Standard <ChevronRight size={14} /></span>} /><SettingsRow icon={Vibrate} label="Haptic feedback" trailing={<span className="app-switch is-on"><i /></span>} /></section><p className="app-helper-copy">Stokta 2.0 uses IBM Plex Sans throughout the app.</p></div>;
 }
 
 function ReportsScreen({ goBack, showNotice }: { goBack: () => void; showNotice: (notice: string) => void }) {
@@ -199,17 +231,28 @@ function ReportsScreen({ goBack, showNotice }: { goBack: () => void; showNotice:
 
 function BackupsScreen({ goBack, showNotice }: { goBack: () => void; showNotice: (notice: string) => void }) {
   const [scheduled, setScheduled] = useState(true);
-  return <div className="app-page"><SubviewHeading goBack={goBack}>Backups & restore</SubviewHeading><section className="app-settings-group"><SectionLabel>BACKUPS & RESTORE</SectionLabel><button className="app-settings-row" onClick={() => setScheduled((enabled) => !enabled)} type="button"><DatabaseBackup size={15} /><span><strong>Enable automatic backups</strong><small>Creates one local CSV backup per day when enabled.</small></span><span className={scheduled ? "app-switch is-on" : "app-switch"}><i /></span></button></section><div className="backup-actions"><button className="app-primary-button" onClick={() => showNotice("Local backup created")} type="button"><DatabaseBackup size={14} /> Back up now</button><button className="app-secondary-button" onClick={() => showNotice("Choose a backup file") } type="button"><FileUp size={14} /> Choose backup file</button></div><section className="app-resource-section"><SectionLabel>EXISTING BACKUPS</SectionLabel><div className="app-backup-list"><button type="button"><DatabaseBackup size={15} /><span><strong>stokta-backup-2026-09-09.csv</strong><small>Today · 32 KB</small></span><em>Restore</em></button><button type="button"><DatabaseBackup size={15} /><span><strong>stokta-backup-2026-09-08.csv</strong><small>Yesterday · 31 KB</small></span><em>Restore</em></button></div></section></div>;
+  const [reminders, setReminders] = useState(true);
+  return <div className="app-page"><SubviewHeading goBack={goBack}>Backups & restore</SubviewHeading><section className="app-settings-group"><SectionLabel>BACKUPS & RESTORE</SectionLabel><button className="app-settings-row" onClick={() => setScheduled((enabled) => !enabled)} type="button"><DatabaseBackup size={15} /><span><strong>Enable automatic backups</strong><small>Creates one local CSV backup per day when enabled.</small></span><span className={scheduled ? "app-switch is-on" : "app-switch"}><i /></span></button><button className="app-settings-row" onClick={() => setReminders((enabled) => !enabled)} type="button"><BellRing size={15} /><span><strong>Backup reminders</strong><small>Local notifications on this device.</small></span><span className={reminders ? "app-switch is-on" : "app-switch"}><i /></span></button></section><div className="backup-actions"><button className="app-primary-button" onClick={() => showNotice("Local backup created")} type="button"><DatabaseBackup size={14} /> Back up now</button><button className="app-secondary-button" onClick={() => showNotice("Choose a backup file") } type="button"><FileUp size={14} /> Choose backup file</button></div><section className="app-resource-section"><SectionLabel>EXISTING BACKUPS</SectionLabel><div className="app-backup-list"><button type="button"><DatabaseBackup size={15} /><span><strong>stokta-backup-2026-10-04.csv</strong><small>Today · 32 KB</small></span><em>Restore</em></button><button type="button"><DatabaseBackup size={15} /><span><strong>stokta-backup-2026-10-03.csv</strong><small>Yesterday · 31 KB</small></span><em>Restore</em></button></div></section></div>;
 }
 
 function TransferScreen({ goBack, showNotice }: { goBack: () => void; showNotice: (notice: string) => void }) {
-  return <div className="app-page"><SubviewHeading goBack={goBack}>Import / export</SubviewHeading><p className="app-page-description">Move inventory through validated local files.</p><div className="transfer-stack"><button onClick={() => showNotice("Choose a CSV or Excel file")} type="button"><FileUp size={17} /><span><strong>Import inventory</strong><small>CSV or XLSX</small></span><ChevronRight size={14} /></button><button onClick={() => showNotice("Export prepared for sharing")} type="button"><FileDown size={17} /><span><strong>Export inventory</strong><small>CSV or XLSX</small></span><ChevronRight size={14} /></button></div></div>;
+  return <div className="app-page"><SubviewHeading goBack={goBack}>Import / export</SubviewHeading><p className="app-page-description">Move inventory for the selected store through validated local files.</p><div className="transfer-stack"><button onClick={() => showNotice("Choose a CSV or Excel file for Main Store")} type="button"><FileUp size={17} /><span><strong>Import inventory</strong><small>Main Store · CSV or XLSX</small></span><ChevronRight size={14} /></button><button onClick={() => showNotice("Main Store export prepared for sharing")} type="button"><FileDown size={17} /><span><strong>Export inventory</strong><small>Main Store · CSV or XLSX</small></span><ChevronRight size={14} /></button></div></div>;
 }
 
 function LanguageScreen({ goBack }: { goBack: () => void }) {
   const [language, setLanguage] = useState("English");
   const languages = ["🇬🇧 English", "🇹🇷 Türkçe", "🇺🇿 O‘zbekcha", "🇰🇿 Қазақша", "🇰🇬 Кыргызча", "🇷🇺 Русский", "🇦🇿 Azərbaycanca"];
   return <div className="app-page"><SubviewHeading goBack={goBack}>Display language</SubviewHeading><div className="app-language-list">{languages.map((item) => { const name = item.slice(item.indexOf(" ") + 1); return <button className={name === language ? "is-active" : ""} key={item} onClick={() => setLanguage(name)} type="button"><span>{item}</span>{name === language && <Check size={14} />}</button>; })}</div></div>;
+}
+
+function PlansScreen({ goBack, showNotice }: { goBack: () => void; showNotice: (notice: string) => void }) {
+  const [plan, setPlan] = useState<"stokta" | "pro">("pro");
+  const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
+  const features = plan === "pro"
+    ? ["Up to 20 synced devices", "20 stores and 20 personnel", "20M total products", "Reports up to one year", "Automatic backups"]
+    : ["One local device", "One store", "10,000 total products", "Barcode scanning", "Selected-store CSV and Excel transfer"];
+
+  return <div className="app-page"><SubviewHeading goBack={goBack}>Choose your plan</SubviewHeading><div className="app-plan-tabs"><button className={plan === "stokta" ? "is-active" : ""} onClick={() => setPlan("stokta")} type="button">Stokta Free</button><button className={plan === "pro" ? "is-active" : ""} onClick={() => setPlan("pro")} type="button">Stokta Pro</button></div>{plan === "pro" && <div className="app-plan-periods"><button className={period === "monthly" ? "is-active" : ""} onClick={() => setPeriod("monthly")} type="button"><small>Monthly</small><strong>Localized price</strong><span>shown by App Store</span></button><button className={period === "yearly" ? "is-active" : ""} onClick={() => setPeriod("yearly")} type="button"><em>YEARLY</em><small>Yearly</small><strong>Localized price</strong><span>shown by App Store</span></button></div>}<div className="app-plan-features">{features.map((feature) => <p key={feature}><Check size={14} /><span>{feature}</span></p>)}</div><button className="app-primary-button" onClick={() => showNotice(plan === "pro" ? `Stokta Pro ${period} selected` : "Continue with Stokta Free")} type="button">{plan === "pro" ? `Continue with ${period} plan` : "Continue with Stokta Free"}</button>{plan === "pro" && <><button className="app-secondary-button app-restore-button" onClick={() => showNotice("Checking App Store purchases")} type="button">Restore purchases</button><p className="app-helper-copy">The App Store confirms your price and renewal terms before purchase.</p></>}</div>;
 }
 
 function ScannerOverlay({ close, showNotice }: { close: () => void; showNotice: (notice: string) => void }) {
@@ -224,7 +267,7 @@ export function IPhoneDemo() {
   const [tab, setTab] = useState<Tab>("home");
   const [settingsView, setSettingsView] = useState<SettingsView>("root");
   const [overlay, setOverlay] = useState<Overlay>(null);
-  const [dark, setDark] = useState(false);
+  const [theme, setTheme] = useState<ThemeMode>("system");
   const [notice, setNotice] = useState("");
   const [stores, setStores] = useState(initialStores);
   const [productName, setProductName] = useState("");
@@ -238,25 +281,27 @@ export function IPhoneDemo() {
   const selectTab = (next: Tab) => { setTab(next); if (next !== "settings") setSettingsView("root"); };
   const closeOverlay = () => setOverlay(null);
   const addProduct = (event: FormEvent) => { event.preventDefault(); if (!productName.trim()) return; closeOverlay(); showNotice(`${productName.trim()} added to Main Store`); setProductName(""); };
-  const addStore = (event: FormEvent) => { event.preventDefault(); const name = storeName.trim(); if (!name || stores.length >= 10) return; setStores((current) => [...current, { code: `STORE-${current.length + 1}`, low: 0, name, products: 0, units: 0 }]); closeOverlay(); showNotice(`${name} created`); setStoreName(""); };
+  const addStore = (event: FormEvent) => { event.preventDefault(); const name = storeName.trim(); if (!name || stores.length >= 20) return; setStores((current) => [...current, { code: `STORE-${current.length + 1}`, low: 0, name, products: 0, units: 0 }]); closeOverlay(); showNotice(`${name} created`); setStoreName(""); };
 
   let screen: React.ReactNode;
   if (tab === "home") screen = <HomeScreen openSettings={openSettings} />;
   else if (tab === "products") screen = <ProductsScreen openOverlay={setOverlay} showNotice={showNotice} />;
   else if (tab === "stores") screen = <StoresScreen openOverlay={setOverlay} stores={stores} />;
-  else if (settingsView === "appearance") screen = <AppearanceScreen dark={dark} goBack={() => setSettingsView("root")} setDark={setDark} />;
+  else if (tab === "team") screen = <TeamScreen showNotice={showNotice} />;
+  else if (settingsView === "appearance") screen = <AppearanceScreen goBack={() => setSettingsView("root")} setTheme={setTheme} theme={theme} />;
   else if (settingsView === "reports") screen = <ReportsScreen goBack={() => setSettingsView("root")} showNotice={showNotice} />;
   else if (settingsView === "backups") screen = <BackupsScreen goBack={() => setSettingsView("root")} showNotice={showNotice} />;
   else if (settingsView === "transfer") screen = <TransferScreen goBack={() => setSettingsView("root")} showNotice={showNotice} />;
   else if (settingsView === "language") screen = <LanguageScreen goBack={() => setSettingsView("root")} />;
-  else screen = <SettingsRoot dark={dark} openView={setSettingsView} />;
+  else if (settingsView === "plans") screen = <PlansScreen goBack={() => setSettingsView("root")} showNotice={showNotice} />;
+  else screen = <SettingsRoot openView={setSettingsView} theme={theme} />;
 
   return (
     <div className="iphone-stage">
       <span className="demo-callout"><span /> LIVE APP DEMO</span>
       <div className="iphone-device" aria-label="Interactive Stokta app demo">
         <span className="iphone-side-button iphone-side-button-one" /><span className="iphone-side-button iphone-side-button-two" /><span className="iphone-side-button iphone-side-button-three" />
-        <div className="iphone-bezel"><div className="iphone-island"><span /></div><div className={dark ? "iphone-screen is-dark" : "iphone-screen"}><div className="iphone-status"><span>9:41</span><span className="status-icons">● ◒ ▰</span></div><PhoneHeader />{screen}{notice && <button className="app-toast" onClick={() => setNotice("")} type="button"><Check size={13} />{notice}</button>}<nav className="app-bottom-nav" aria-label="Demo app navigation">{navItems.map(({ id, label, icon: Icon }) => <button className={tab === id ? "is-active" : ""} key={id} onClick={() => selectTab(id)} type="button"><span><Icon size={15} /></span><small>{label}</small></button>)}</nav><div className="home-indicator" />{overlay === "scan" && <ScannerOverlay close={closeOverlay} showNotice={showNotice} />}{overlay === "add-product" && <BottomSheet close={closeOverlay} title="Add product"><form className="sheet-form" onSubmit={addProduct}><label>Product name<input autoFocus onChange={(event) => setProductName(event.target.value)} placeholder="e.g. Shipping labels" value={productName} /></label><button className="app-primary-button" type="submit">Create product</button></form></BottomSheet>}{overlay === "files" && <BottomSheet close={closeOverlay} title="Import / export"><button className="sheet-action" onClick={() => { closeOverlay(); openSettings("transfer"); }} type="button"><FileUp size={16} /><span><strong>Import inventory</strong><small>CSV or XLSX</small></span><ChevronRight size={14} /></button><button className="sheet-action" onClick={() => { closeOverlay(); showNotice("Export prepared for sharing"); }} type="button"><FileDown size={16} /><span><strong>Export inventory</strong><small>CSV or XLSX</small></span><ChevronRight size={14} /></button></BottomSheet>}{overlay === "add-store" && <BottomSheet close={closeOverlay} title="Add store"><form className="sheet-form" onSubmit={addStore}><label>Store name<input autoFocus onChange={(event) => setStoreName(event.target.value)} placeholder="e.g. Izmir Depot" value={storeName} /></label><button className="app-primary-button" type="submit">Create store</button></form></BottomSheet>}</div></div>
+        <div className="iphone-bezel"><div className="iphone-island"><span /></div><div className={theme === "dark" ? "iphone-screen is-dark" : "iphone-screen"}><div className="iphone-status"><span>9:41</span><span className="status-icons">● ◒ ▰</span></div><PhoneHeader />{screen}{notice && <button className="app-toast" onClick={() => setNotice("")} type="button"><Check size={13} />{notice}</button>}<nav className="app-bottom-nav" aria-label="Demo app navigation">{navItems.map(({ id, label, icon: Icon }) => <button className={tab === id ? "is-active" : ""} key={id} onClick={() => selectTab(id)} type="button"><span><Icon size={15} /></span><small>{label}</small></button>)}</nav><div className="home-indicator" />{overlay === "scan" && <ScannerOverlay close={closeOverlay} showNotice={showNotice} />}{overlay === "add-product" && <BottomSheet close={closeOverlay} title="Add product"><form className="sheet-form" onSubmit={addProduct}><label>Product name<input autoFocus onChange={(event) => setProductName(event.target.value)} placeholder="e.g. Shipping labels" value={productName} /></label><div className="sheet-suggestion"><span><strong>Product code</strong><small>PRD-009</small></span><span><strong>SKU</strong><small>MAIN-PRD-009</small></span></div><button className="sheet-action" onClick={() => showNotice("Choose a local product image")} type="button"><FileImage size={16} /><span><strong>Attach image</strong><small>Stored only on this device</small></span><ChevronRight size={14} /></button><button className="app-primary-button" type="submit">Create product</button></form></BottomSheet>}{overlay === "files" && <BottomSheet close={closeOverlay} title="Store files"><button className="sheet-action" onClick={() => { closeOverlay(); openSettings("transfer"); }} type="button"><FileUp size={16} /><span><strong>Import Excel / CSV</strong><small>Main Store only</small></span><ChevronRight size={14} /></button><button className="sheet-action" onClick={() => { closeOverlay(); showNotice("Main Store export prepared"); }} type="button"><FileDown size={16} /><span><strong>Export Excel / CSV</strong><small>Main Store only</small></span><ChevronRight size={14} /></button></BottomSheet>}{overlay === "product-actions" && <BottomSheet close={closeOverlay} title="Product actions"><button className="sheet-action" onClick={() => { closeOverlay(); showNotice("Select products to move"); }} type="button"><HardDrive size={16} /><span><strong>Move products</strong><small>Select one or more products</small></span><ChevronRight size={14} /></button><button className="sheet-action is-danger" onClick={() => { closeOverlay(); showNotice("Select products to delete"); }} type="button"><X size={16} /><span><strong>Delete products</strong><small>Select one or more products</small></span><ChevronRight size={14} /></button></BottomSheet>}{overlay === "add-store" && <BottomSheet close={closeOverlay} title="Add store"><form className="sheet-form" onSubmit={addStore}><label>Store name<input autoFocus onChange={(event) => setStoreName(event.target.value)} placeholder="e.g. Izmir Depot" value={storeName} /></label><button className="app-primary-button" type="submit">Create store</button></form></BottomSheet>}</div></div>
       </div>
     </div>
   );

@@ -45,6 +45,7 @@ export function SiteHeader() {
         <nav className={menuOpen ? "is-open" : ""} id="primary-navigation" aria-label="Primary navigation">
           <a href={`${siteHref()}#demo`} onClick={closeMenu}>DEMO</a>
           <a href={`${siteHref()}#features`} onClick={closeMenu}>Features</a>
+          <a href={`${siteHref()}#plans`} onClick={closeMenu}>Pro</a>
           <a href={`${siteHref()}#support`} onClick={closeMenu}>Support</a>
         </nav>
         <a className="header-action" href={`${siteHref()}#download`}>Download</a>
@@ -59,8 +60,8 @@ export function SiteFooter() {
       <a className="brand-lockup brand-lockup-footer" href={`${siteHref()}#top`}><BrandLockup markSize={30} /></a>
       <p>© 2026 Demir Software</p>
       <div>
-        <a href={siteHref("legal/#privacy")}>Privacy</a>
-        <a href={siteHref("legal/#terms")}>Terms</a>
+        <a href={siteHref("privacy/")}>Privacy</a>
+        <a href={siteHref("terms/")}>Terms</a>
         <a href={siteHref("brand/")}>Brand</a>
         <a href={`${siteHref()}#support`}>Support</a>
       </div>

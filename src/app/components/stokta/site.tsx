@@ -3,14 +3,20 @@ import {
   Apple,
   ArrowRight,
   Barcode,
+  BellRing,
   CalendarClock,
+  Cloud,
   FileSpreadsheet,
   FileText,
+  Image,
   Languages,
   PackageCheck,
   Play,
+  RefreshCw,
   Send,
+  ShieldCheck,
   Store,
+  Users,
 } from "lucide-react";
 import { IPhoneDemo } from "./iphone-app-demo";
 import { BrandMark, SiteFooter, SiteHeader, SUPPORT_EMAIL } from "./site-chrome";
@@ -18,13 +24,22 @@ import { BrandMark, SiteFooter, SiteHeader, SUPPORT_EMAIL } from "./site-chrome"
 const APP_STORE_URL = "https://apps.apple.com/us/search?term=Stokta";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/search?q=Stokta&c=apps";
 
-const features = [
-  { icon: Store, value: "10", title: "stores", body: "Run independent SKUs, quantities and stock thresholds for as many as ten active locations." },
-  { icon: PackageCheck, value: "100,000", title: "products", body: "Keep a serious catalogue responsive, searchable and organized on the device." },
-  { icon: Barcode, value: "SCAN", title: "barcode scanning", body: "Add and find products by pointing the camera at the barcode—frames are never stored." },
-  { icon: CalendarClock, value: "DAILY", title: "scheduled backups", body: "Enable an optional daily local snapshot, create one now or perform a warned full rollback." },
-  { icon: FileSpreadsheet, value: "CSV · XLSX", title: "bulk import / export", body: "Move full inventories through validated local files and the native save or share sheet." },
-  { icon: FileText, value: "6 MONTHS", title: "reporting", body: "Generate local PDF reports for today, 7 days, 30 days, 3 months or 6 months." },
+const freeFeatures = [
+  { icon: Store, value: "1", title: "store", body: "Manage products, quantities and stock thresholds for one store with Stokta Free." },
+  { icon: PackageCheck, value: "10,000", title: "total products", body: "Build a substantial local catalogue without a subscription." },
+  { icon: Barcode, value: "SCAN", title: "barcode scanning", body: "Add and find products with the camera. Barcode frames are processed without being saved." },
+  { icon: FileSpreadsheet, value: "CSV · XLSX", title: "selected-store transfer", body: "Import or export the currently selected store through validated CSV and Excel files." },
+  { icon: Image, value: "LOCAL", title: "product images", body: "Attach optional product images that remain on the device where they were selected." },
+  { icon: ShieldCheck, value: "DEVICE", title: "local-first storage", body: "Core inventory data stays on your device unless you activate Stokta Pro cloud synchronization." },
+] as const;
+
+const proFeatures = [
+  { icon: Store, value: "20", title: "stores", body: "Operate up to twenty stores from one Stokta Pro workspace." },
+  { icon: Users, value: "20", title: "personnel", body: "Add up to twenty teammates with Administrator or Personnel roles and store-specific access." },
+  { icon: PackageCheck, value: "20M", title: "total products", body: "Scale the workspace to as many as twenty million total products." },
+  { icon: Cloud, value: "SYNC", title: "multiple devices", body: "Keep shared inventory current across devices through Firebase cloud synchronization." },
+  { icon: FileText, value: "1 YEAR", title: "reports", body: "Generate inventory reports for periods ranging from today through one year." },
+  { icon: CalendarClock, value: "AUTO", title: "backups", body: "Create automatic local backups and receive local reminder notifications when a backup is due." },
 ] as const;
 
 const languages = [
@@ -87,7 +102,7 @@ export function ShowcaseSite() {
           <div className="hero-copy">
             <span className="eyebrow"><span className="status-dot" /> Local-first inventory</span>
             <h1>Know what is in stock. Everywhere.</h1>
-            <p className="hero-lede">Stokta keeps products, quantities, reports and backups close to the people doing the work fast to scan, clear to review and local by default.</p>
+            <p className="hero-lede">Start with one local store and 10,000 products. Upgrade to Stokta Pro when your operation needs teams, multiple devices and cloud-synced inventory at serious scale.</p>
             <div className="store-buttons" id="download"><StoreButton store="apple" /><StoreButton store="google" /></div>
             <a className="hero-text-link" href="#demo">Try the interactive app <ArrowRight aria-hidden="true" size={17} /></a>
           </div>
@@ -95,10 +110,21 @@ export function ShowcaseSite() {
         </section>
 
         <section className="section section-dark" id="features">
-          <div className="section-heading"><span className="eyebrow eyebrow-on-dark">Built for real inventory</span><h2>Stokta keeps every stock task in reach.</h2><p>Seven focused capabilities cover the daily work from the first scan to a six-month record.</p></div>
+          <div className="section-heading"><span className="eyebrow eyebrow-on-dark">Stokta Free</span><h2>The core inventory tools stay local.</h2><p>One store, up to 10,000 total products and the everyday tools to scan, manage and move inventory.</p></div>
           <div className="feature-grid">
-            {features.map(({ icon: Icon, value, title, body }, index) => <article className="feature-card" key={title}><div className="feature-index">{String(index + 1).padStart(2, "0")}</div><Icon aria-hidden="true" className="feature-icon" size={22} /><strong className="feature-value">{value}</strong><h3>{title}</h3><p>{body}</p></article>)}
+            {freeFeatures.map(({ icon: Icon, value, title, body }, index) => <article className="feature-card" key={title}><div className="feature-index">{String(index + 1).padStart(2, "0")}</div><Icon aria-hidden="true" className="feature-icon" size={22} /><strong className="feature-value">{value}</strong><h3>{title}</h3><p>{body}</p></article>)}
             <article className="feature-card language-feature"><div className="feature-index">07</div><Languages aria-hidden="true" className="feature-icon" size={22} /><strong className="feature-value">7</strong><h3>interface languages</h3><ul>{languages.map(([flag, name]) => <li key={name}><span aria-hidden="true">{flag}</span>{name}</li>)}</ul></article>
+          </div>
+        </section>
+
+        <section className="section pro-section" id="plans">
+          <div className="section-heading"><span className="eyebrow">Stokta Pro</span><h2>Scale the workspace, not the complexity.</h2><p>Pro adds collaboration, higher limits, cloud synchronization, longer reports and automatic local protection.</p></div>
+          <div className="pro-feature-grid">
+            {proFeatures.map(({ icon: Icon, value, title, body }) => <article className="pro-feature-card" key={title}><Icon aria-hidden="true" size={21} /><strong>{value}</strong><h3>{title}</h3><p>{body}</p></article>)}
+          </div>
+          <div className="subscription-panel">
+            <div><span className="eyebrow">Monthly or yearly</span><h3>Pricing appears in your local App Store.</h3><p>The App Store shows the final localized price and renewal terms before purchase. Existing purchases can be restored from inside Stokta.</p></div>
+            <div className="subscription-points"><span><RefreshCw size={17} /> Restore purchases</span><span><BellRing size={17} /> Local backup reminders</span><span><Cloud size={17} /> Firebase sync with Pro</span></div>
           </div>
         </section>
 
@@ -107,7 +133,7 @@ export function ShowcaseSite() {
           <SupportForm />
         </section>
 
-        <section className="closing-section"><div className="closing-mark"><BrandMark size={56} /></div><span className="eyebrow eyebrow-on-dark">Stock · simple · sorted</span><h2>Inventory without the detour.</h2><p>Up to ten stores, one hundred thousand products and the local tools to keep both under control.</p><div className="store-buttons store-buttons-light"><StoreButton store="apple" /><StoreButton store="google" /></div></section>
+        <section className="closing-section"><div className="closing-mark"><BrandMark size={56} /></div><span className="eyebrow eyebrow-on-dark">Stokta 2.0</span><h2>Inventory without the detour.</h2><p>Start free with one store and 10,000 products, then move to Pro for twenty stores, teams, sync and up to twenty million products.</p><div className="store-buttons store-buttons-light"><StoreButton store="apple" /><StoreButton store="google" /></div></section>
       </main>
 
       <SiteFooter />
