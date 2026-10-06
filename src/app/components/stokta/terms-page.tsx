@@ -1,4 +1,4 @@
-import { ExternalLink, FileText, ShieldCheck, Trash2 } from "lucide-react";
+import { ExternalLink, FileText, ShieldCheck } from "lucide-react";
 import { SiteFooter, SiteHeader, SUPPORT_EMAIL, siteHref } from "./site-chrome";
 
 const updated = "October 6, 2026";
@@ -20,10 +20,9 @@ export function TermsPage() {
           </div>
         </section>
 
-        <nav aria-label="Privacy and account documents" className="document-switcher">
+        <nav aria-label="Policy documents" className="document-switcher">
           <a href={siteHref("privacy/")}><ShieldCheck aria-hidden="true" size={18} /> Privacy Policy</a>
           <a aria-current="page" href={siteHref("terms/")}><FileText aria-hidden="true" size={18} /> Terms of Use</a>
-          <a href={siteHref("delete-account/")}><Trash2 aria-hidden="true" size={18} /> Delete account</a>
         </nav>
 
         <div className="policy-layout">
@@ -81,7 +80,7 @@ export function TermsPage() {
 
               <section id="deletion">
                 <h3>Deletion, cancellation, and termination</h3>
-                <p>You may stop using Stokta at any time. Deleting the app generally removes app-managed local records but may not remove separately exported files, shared files, backups, cloud workspace data, or store transaction records. Use <strong>Settings → Account Management → Delete account</strong>, or follow the verified email-request process on the <a href={siteHref("delete-account/")}>Account Deletion page</a>. Account deletion and subscription cancellation are separate actions: deleting an account does not cancel App Store or Google Play renewal, and canceling a subscription does not delete the account or its data. Subscription cancellation must be completed through the applicable store. Demir Software may suspend or end access where reasonably necessary to address material breaches, abuse, security risks, unpaid entitlement, legal obligations, or plan-limit enforcement.</p>
+                <p>You may stop using Stokta at any time. Deleting the app generally removes app-managed local records but may not remove separately exported files, shared files, backups, cloud workspace data, or store transaction records. Use <strong>Settings → Account Management → Delete account</strong>, or email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from an address you can access with the email used for Stokta and your brand or workspace name so the request can be verified. Account deletion and subscription cancellation are separate actions: deleting an account does not cancel App Store or Google Play renewal, and canceling a subscription does not delete the account or its data. Subscription cancellation must be completed through the applicable store. Demir Software may suspend or end access where reasonably necessary to address material breaches, abuse, security risks, unpaid entitlement, legal obligations, or plan-limit enforcement.</p>
               </section>
 
               <section>

@@ -1,4 +1,4 @@
-import { FileText, ShieldCheck, Trash2 } from "lucide-react";
+import { FileText, ShieldCheck } from "lucide-react";
 import { SiteFooter, SiteHeader, SUPPORT_EMAIL, siteHref } from "./site-chrome";
 
 const updated = "October 6, 2026";
@@ -20,10 +20,9 @@ export function PrivacyPage() {
           </div>
         </section>
 
-        <nav aria-label="Privacy and account documents" className="document-switcher">
+        <nav aria-label="Policy documents" className="document-switcher">
           <a aria-current="page" href={siteHref("privacy/")}><ShieldCheck aria-hidden="true" size={18} /> Privacy Policy</a>
           <a href={siteHref("terms/")}><FileText aria-hidden="true" size={18} /> Terms of Use</a>
-          <a href={siteHref("delete-account/")}><Trash2 aria-hidden="true" size={18} /> Delete account</a>
         </nav>
 
         <div className="policy-layout">
@@ -96,7 +95,7 @@ export function PrivacyPage() {
               <section id="retention">
                 <h3>Retention, deletion, and your choices</h3>
                 <p>Local records remain until you delete them, complete the in-app deletion flow on that device, or uninstall Stokta. Reports, images, exports, and backups saved outside app-managed storage may need to be deleted separately. Cloud records remain while needed to provide the account or workspace, then are deleted through the applicable account-deletion process, subject to provider backup, security, legal, fraud-prevention, accounting, and transaction-record requirements.</p>
-                <p>In Stokta, open <strong>Settings → Account Management → Delete account</strong>. If you cannot access the app, use the public <a href={siteHref("delete-account/")}>Account Deletion page</a> to send a verified request. The in-app flow removes the applicable Firebase account and cloud records and clears Stokta-managed data from the current device. A web support request cannot erase local-only data remaining on a phone or tablet. Account deletion does not cancel an App Store or Google Play subscription.</p>
+                <p>In Stokta, open <strong>Settings → Account Management → Delete account</strong>. If you cannot access the app, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from an address you can access and include the email used for Stokta plus your brand or workspace name so Demir Software can verify the request. The in-app flow removes the applicable Firebase account and cloud records and clears Stokta-managed data from the current device. An email support request cannot erase local-only data remaining on a phone or tablet. Account deletion does not cancel an App Store or Google Play subscription.</p>
               </section>
 
               <section>
@@ -121,7 +120,7 @@ export function PrivacyPage() {
 
               <section id="contact">
                 <h3>Contact</h3>
-                <p>For privacy questions or requests, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. For deletion instructions, visit <a href={siteHref("delete-account/")}>Delete account</a>.</p>
+                <p>For privacy questions or deletion requests, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.</p>
               </section>
             </article>
           </div>

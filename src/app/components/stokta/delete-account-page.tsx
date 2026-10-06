@@ -1,4 +1,4 @@
-import { ArrowRight, FileText, ShieldCheck, Trash2 } from "lucide-react";
+import { ArrowRight, FileText, ShieldCheck } from "lucide-react";
 import { SiteFooter, SiteHeader, SUPPORT_EMAIL, siteHref } from "./site-chrome";
 
 const updated = "October 6, 2026";
@@ -29,10 +29,9 @@ export function DeleteAccountPage() {
           </div>
         </section>
 
-        <nav aria-label="Privacy and account documents" className="document-switcher">
+        <nav aria-label="Related policy documents" className="document-switcher">
           <a href={siteHref("privacy/")}><ShieldCheck aria-hidden="true" size={18} /> Privacy Policy</a>
           <a href={siteHref("terms/")}><FileText aria-hidden="true" size={18} /> Terms of Use</a>
-          <a aria-current="page" href={siteHref("delete-account/")}><Trash2 aria-hidden="true" size={18} /> Delete account</a>
         </nav>
 
         <div className="policy-layout">

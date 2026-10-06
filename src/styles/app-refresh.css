@@ -523,7 +523,6 @@ body { background: var(--white); color: var(--ink); }
   .subpage-hero-copy p { font-size: 18px; }
   .document-switcher { width: calc(100% - 28px); flex-wrap: wrap; gap: 8px; }
   .document-switcher a { min-height: 52px; flex: 1 1 calc(50% - 4px); justify-content: center; padding: 0 13px; }
-  .document-switcher a:last-child { flex-basis: 100%; }
   .policy-layout { width: calc(100% - 28px); padding: 78px 0; }
   .policy-document { border-radius: 22px; }
   .policy-document > header { padding: 52px 25px 40px; }
