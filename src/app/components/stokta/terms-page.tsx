@@ -1,7 +1,7 @@
-import { ExternalLink, FileText, ShieldCheck } from "lucide-react";
+import { ExternalLink, FileText, ShieldCheck, Trash2 } from "lucide-react";
 import { SiteFooter, SiteHeader, SUPPORT_EMAIL, siteHref } from "./site-chrome";
 
-const updated = "October 4, 2026";
+const updated = "October 6, 2026";
 
 export function TermsPage() {
   return (
@@ -11,7 +11,7 @@ export function TermsPage() {
       <main className="subpage-main" id="main-content">
         <section className="subpage-hero" id="top">
           <div>
-            <span className="eyebrow"><span className="status-dot" /> Stokta policy</span>
+            <span className="eyebrow"><span className="status-dot" /> Stokta 2.0.1 policy</span>
             <h1>Terms,<br />plainly.</h1>
           </div>
           <div className="subpage-hero-copy">
@@ -20,9 +20,10 @@ export function TermsPage() {
           </div>
         </section>
 
-        <nav aria-label="Legal documents" className="document-switcher">
+        <nav aria-label="Privacy and account documents" className="document-switcher">
           <a href={siteHref("privacy/")}><ShieldCheck aria-hidden="true" size={18} /> Privacy Policy</a>
           <a aria-current="page" href={siteHref("terms/")}><FileText aria-hidden="true" size={18} /> Terms of Use</a>
+          <a href={siteHref("delete-account/")}><Trash2 aria-hidden="true" size={18} /> Delete account</a>
         </nav>
 
         <div className="policy-layout">
@@ -45,7 +46,7 @@ export function TermsPage() {
                 <span className="document-number">02</span>
                 <span className="eyebrow eyebrow-on-dark">Terms of Use</span>
                 <h2>Practical terms for a practical tool.</h2>
-                <p>These terms apply to your use of Stokta and supplement the rules of the store from which you obtained the app.</p>
+                <p>These terms apply to your use of Stokta 2.0.1 and supplement the rules of the store from which you obtained the app.</p>
               </header>
 
               <section id="agreement">
@@ -60,7 +61,7 @@ export function TermsPage() {
 
               <section id="subscriptions">
                 <h3>Monthly and yearly auto-renewing subscriptions</h3>
-                <p>Stokta Pro is offered as an auto-renewing monthly or yearly subscription. The localized price, billing period, and any offer shown by the App Store or Google Play before confirmation control your purchase. Payment is charged to your store account when confirmed. Unless you cancel before renewal, the subscription renews automatically and the store charges the applicable renewal price. Manage or cancel the subscription in your Apple Account or Google Play settings. Deleting Stokta does not cancel a subscription. Use Restore Purchases inside Stokta to recover a supported prior entitlement. Billing, cancellation, and refund requests are handled under the applicable store’s policies and mandatory law.</p>
+                <p>Stokta Pro is offered as an auto-renewing monthly or yearly subscription. The localized price, billing period, and any offer shown by the App Store or Google Play before confirmation control your purchase. Payment is charged to your store account when confirmed. Unless you cancel before renewal, the subscription renews automatically and the store charges the applicable renewal price. Manage or cancel the subscription in your Apple Account or Google Play settings. Cancellation stops future renewal; Stokta Pro remains available until the end of the period you have already paid for, subject to the store’s refund and entitlement rules. Use Restore Purchases inside Stokta to recover a supported prior entitlement. Billing, cancellation, and refund requests are handled under the applicable store’s policies and mandatory law.</p>
               </section>
 
               <section id="content">
@@ -80,7 +81,7 @@ export function TermsPage() {
 
               <section id="deletion">
                 <h3>Deletion, cancellation, and termination</h3>
-                <p>You may stop using Stokta at any time. Deleting the app generally removes app-managed local records but may not remove separately exported files, shared files, backups, cloud workspace data, or store transaction records. Cloud deletion requests can be sent to <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Subscription cancellation must be completed separately through the applicable store. Demir Software may suspend or end access where reasonably necessary to address material breaches, abuse, security risks, unpaid entitlement, legal obligations, or plan-limit enforcement.</p>
+                <p>You may stop using Stokta at any time. Deleting the app generally removes app-managed local records but may not remove separately exported files, shared files, backups, cloud workspace data, or store transaction records. Use <strong>Settings → Account Management → Delete account</strong>, or follow the verified email-request process on the <a href={siteHref("delete-account/")}>Account Deletion page</a>. Account deletion and subscription cancellation are separate actions: deleting an account does not cancel App Store or Google Play renewal, and canceling a subscription does not delete the account or its data. Subscription cancellation must be completed through the applicable store. Demir Software may suspend or end access where reasonably necessary to address material breaches, abuse, security risks, unpaid entitlement, legal obligations, or plan-limit enforcement.</p>
               </section>
 
               <section>

@@ -62,6 +62,7 @@ export function SiteFooter() {
       <div>
         <a href={siteHref("privacy/")}>Privacy</a>
         <a href={siteHref("terms/")}>Terms</a>
+        <a href={siteHref("delete-account/")}>Delete account</a>
         <a href={siteHref("brand/")}>Brand</a>
         <a href={`${siteHref()}#support`}>Support</a>
       </div>

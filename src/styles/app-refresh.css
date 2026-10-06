@@ -437,13 +437,19 @@ body { background: var(--white); color: var(--ink); }
 .policy-document > section:last-child { border-bottom: 0; }
 .policy-document section h3 { margin: 0 0 12px; font-size: 21px; font-weight: 650; letter-spacing: -0.03em; }
 .policy-document section p { max-width: 76ch; margin: 0; color: var(--charcoal); font-family: "IBM Plex Sans", sans-serif; font-size: 16px; line-height: 1.75; }
+.policy-document section p + p { margin-top: 16px; }
 .policy-document section a { display: inline; color: inherit; font-weight: 700; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .policy-document section a svg { display: inline; vertical-align: -2px; }
+.policy-list, .policy-steps { max-width: 76ch; margin: 20px 0; padding-left: 22px; color: var(--charcoal); font-size: 16px; line-height: 1.7; }
+.policy-list li + li, .policy-steps li + li { margin-top: 10px; }
+.policy-action { display: inline-flex !important; min-height: 46px; align-items: center; gap: 9px; margin-top: 22px; padding: 0 17px; border: 1px solid var(--ink); border-radius: 9px; background: var(--ink); color: var(--white) !important; font-size: 14px; text-decoration: none !important; }
+.policy-action:hover { background: var(--charcoal); }
 .policy-document-dark { border-color: rgba(255, 255, 255, 0.14); background: var(--ink); color: var(--white); }
 .policy-document-dark > header { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.035); }
 .policy-document-dark > header .document-number { color: rgba(255, 255, 255, 0.1); }
 .policy-document-dark > header p,
 .policy-document-dark section p { color: var(--silver); }
+.policy-document-dark .policy-list, .policy-document-dark .policy-steps { color: var(--silver); }
 .policy-document-dark > section { border-color: rgba(255, 255, 255, 0.14); }
 
 /* Brand reference */
@@ -515,8 +521,9 @@ body { background: var(--white); color: var(--ink); }
   .subpage-hero { gap: 38px; padding-top: 72px; padding-bottom: 70px; }
   .subpage-hero h1 { font-size: clamp(54px, 18vw, 76px); }
   .subpage-hero-copy p { font-size: 18px; }
-  .document-switcher { overflow-x: auto; width: calc(100% - 28px); padding-bottom: 3px; }
-  .document-switcher a { min-height: 54px; flex: 0 0 auto; padding: 0 18px; }
+  .document-switcher { width: calc(100% - 28px); flex-wrap: wrap; gap: 8px; }
+  .document-switcher a { min-height: 52px; flex: 1 1 calc(50% - 4px); justify-content: center; padding: 0 13px; }
+  .document-switcher a:last-child { flex-basis: 100%; }
   .policy-layout { width: calc(100% - 28px); padding: 78px 0; }
   .policy-document { border-radius: 22px; }
   .policy-document > header { padding: 52px 25px 40px; }

@@ -29,7 +29,7 @@ export function BrandPage() {
           </div>
           <div className="subpage-hero-copy">
             <p>A practical identity built from barcode geometry, high-contrast neutrals and one clear interface typeface.</p>
-            <span>Brand reference · Version 2.0</span>
+            <span>Brand reference · Version 2.0.1</span>
           </div>
         </section>
 

@@ -25,6 +25,7 @@ export default defineConfig({
         legal: path.resolve(__dirname, 'legal/index.html'),
         privacy: path.resolve(__dirname, 'privacy/index.html'),
         terms: path.resolve(__dirname, 'terms/index.html'),
+        deleteAccount: path.resolve(__dirname, 'delete-account/index.html'),
         brand: path.resolve(__dirname, 'brand/index.html'),
       },
     },

@@ -133,7 +133,7 @@ export function ShowcaseSite() {
           <SupportForm />
         </section>
 
-        <section className="closing-section"><div className="closing-mark"><BrandMark size={56} /></div><span className="eyebrow eyebrow-on-dark">Stokta 2.0</span><h2>Inventory without the detour.</h2><p>Start free with one store and 10,000 products, then move to Pro for twenty stores, teams, sync and up to twenty million products.</p><div className="store-buttons store-buttons-light"><StoreButton store="apple" /><StoreButton store="google" /></div></section>
+        <section className="closing-section"><div className="closing-mark"><BrandMark size={56} /></div><span className="eyebrow eyebrow-on-dark">Stokta 2.0.1</span><h2>Inventory without the detour.</h2><p>Start free with one store and 10,000 products, then move to Pro for twenty stores, teams, sync and up to twenty million products.</p><div className="store-buttons store-buttons-light"><StoreButton store="apple" /><StoreButton store="google" /></div></section>
       </main>
 
       <SiteFooter />
