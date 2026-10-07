@@ -9,22 +9,19 @@ export const siteHref = (path = "") => `${baseUrl}${path.replace(/^\//, "")}`;
 
 export function BrandMark({ size = 36 }: { size?: number }) {
   return (
-    <svg aria-hidden="true" className="brand-mark" height={size} viewBox="0 0 40 40" width={size}>
-      <rect fill="currentColor" height="40" rx="9" width="40" />
-      <g fill="var(--paper)">
-        <rect height="15" opacity="0.92" width="2" x="5" y="9" />
-        <rect height="15" opacity="0.42" width="1" x="8.5" y="9" />
-        <rect height="15" opacity="0.92" width="3" x="11" y="9" />
-        <rect height="15" opacity="0.42" width="1" x="16" y="9" />
-        <rect height="15" opacity="0.92" width="2" x="19" y="9" />
-        <rect height="15" opacity="0.42" width="1" x="23" y="9" />
-        <rect height="15" opacity="0.92" width="3" x="26" y="9" />
-        <rect height="15" opacity="0.42" width="1" x="31" y="9" />
-        <rect height="15" opacity="0.92" width="2" x="34" y="9" />
-        <rect height="2.2" opacity="0.9" rx="1.1" width="32" x="4" y="17.75" />
-        <rect height="1.8" opacity="0.26" rx="0.9" width="28" x="5" y="27" />
-        <rect height="1.8" opacity="0.14" rx="0.9" width="16" x="5" y="30.5" />
+    <svg aria-hidden="true" className="brand-mark" height={size} viewBox="0 0 1024 1024" width={size}>
+      <rect fill="#6677E8" height="1024" rx="220" width="1024" />
+      <g fill="#F8F7F3">
+        <rect height="116" rx="28" width="104" x="244" y="236" />
+        <rect height="116" rx="28" width="128" x="372" y="236" />
+        <rect height="116" rx="28" width="208" x="524" y="236" />
+        <rect height="116" rx="28" width="208" x="292" y="454" />
+        <rect height="116" rx="28" width="128" x="524" y="454" />
+        <rect height="116" rx="28" width="104" x="676" y="454" />
+        <rect height="116" rx="28" width="208" x="244" y="672" />
+        <rect height="116" rx="28" width="128" x="476" y="672" />
       </g>
+      <rect fill="#E77864" height="116" rx="28" width="104" x="628" y="672" />
     </svg>
   );
 }

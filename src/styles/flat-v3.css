@@ -1,0 +1,352 @@
+/* Stokta Flat v3 website and embedded demo theme. Loaded last by design. */
+:root {
+  --white: #ffffff;
+  --silver: #a7b0bd;
+  --mid: #687586;
+  --dark: #344150;
+  --charcoal: #161c24;
+  --ink: #17202b;
+  --ink-soft: #273342;
+  --paper: #f4f6f8;
+  --paper-deep: #edf1f5;
+  --muted: #687586;
+  --muted-dark: #a7b0bd;
+  --line: transparent;
+  --line-strong: transparent;
+  --line-dark: transparent;
+  --primary-flat: #4f63d8;
+  --primary-flat-dark: #6677e8;
+  --accent-flat: #d96956;
+  --accent-flat-dark: #e77864;
+  --healthy-flat: #14785f;
+  --warning-flat: #a96813;
+  --critical-flat: #b84251;
+  --night-flat: #0e1218;
+  --night-surface: #161c24;
+  --night-elevated: #1c2430;
+  --display: "Manrope", sans-serif;
+  --mono: "IBM Plex Mono", monospace;
+}
+
+html { background: var(--paper); }
+body, button, input, select, textarea { font-family: var(--display); }
+body { background: var(--paper); color: var(--ink); }
+::selection { background: #ccd4ff; color: #263783; }
+
+.site-shell,
+.subpage-shell { background: var(--paper); }
+
+/* Flat navigation */
+.site-header {
+  border: 0;
+  background: var(--paper);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.brand-lockup { color: var(--ink); }
+.brand-mark { --paper: #f8f7f3; }
+.site-header nav a { color: var(--mid); }
+.site-header nav a:hover { color: var(--primary-flat); text-decoration: none; }
+.header-action,
+.button-primary,
+.policy-action {
+  border: 0;
+  background: var(--primary-flat);
+  color: #fff;
+  box-shadow: none;
+}
+.header-action:hover,
+.button-primary:hover,
+.policy-action:hover { background: #4053c3; }
+.nav-toggle { border: 0; background: #e8edff; color: var(--primary-flat); box-shadow: none; }
+
+/* Landing page */
+.hero,
+.subpage-hero {
+  border: 0;
+  background: var(--paper);
+  background-image: none;
+}
+.hero::before { display: none; }
+.eyebrow { color: var(--primary-flat); }
+.status-dot,
+.demo-callout > span { background: var(--accent-flat); box-shadow: none; }
+.hero-lede,
+.section-heading > p,
+.legal-copy p,
+.legal-heading > p,
+.support-intro > p,
+.support-form label,
+.support-submit-row p,
+.subpage-hero-copy p { color: var(--mid); }
+.store-button {
+  border: 0;
+  background: #e8edff;
+  color: #3447aa;
+  box-shadow: none;
+}
+.store-button:hover { border: 0; background: #dce3ff; transform: none; }
+.hero-text-link,
+.support-intro > a { color: var(--primary-flat); }
+
+.section-dark,
+.closing-section,
+.brand-section-dark,
+.brand-principles-section {
+  background: var(--night-flat);
+  color: #f7f8fa;
+}
+.section-heading > p,
+.feature-card p,
+.closing-section p,
+.brand-section-dark .brand-section-heading > p,
+.brand-principles-section .brand-section-heading > p { color: #9aa6b5; }
+.eyebrow-on-dark,
+.feature-index { color: #91a0f0; }
+.feature-grid,
+.pro-feature-grid,
+.principle-grid {
+  gap: 12px;
+  border: 0;
+}
+.feature-card {
+  border: 0;
+  border-radius: 18px;
+  background: var(--night-surface);
+}
+.feature-card:hover { background: var(--night-elevated); }
+.feature-icon { color: var(--primary-flat-dark); }
+.feature-value { color: #fff; }
+
+.pro-section,
+.legal-section,
+.support-section { background: var(--paper); color: var(--ink); }
+.pro-feature-card {
+  min-height: 250px;
+  border: 0;
+  border-radius: 18px;
+  background: #fff;
+}
+.pro-feature-card:hover { background: #edf1f5; }
+.pro-feature-card > svg { color: var(--primary-flat); }
+.subscription-panel {
+  border: 0;
+  border-radius: 22px;
+  background: #e8edff;
+  color: #263783;
+  box-shadow: none;
+}
+.subscription-panel p { color: #56668c; }
+.subscription-points { gap: 8px; border: 0; }
+.subscription-points span {
+  min-height: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+  color: #263783;
+}
+.subscription-points svg { color: var(--healthy-flat); }
+.terms-section { background: var(--night-flat); color: #fff; }
+.support-form {
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: none;
+}
+.support-form input,
+.support-form select,
+.support-form textarea {
+  border: 0;
+  background: #edf1f5;
+  color: var(--ink);
+  box-shadow: none;
+}
+.support-form input:focus,
+.support-form select:focus,
+.support-form textarea:focus { outline: 3px solid #ccd4ff; }
+.closing-mark .brand-mark { background: transparent; color: inherit; }
+.store-buttons-light .store-button { border: 0; background: #fff; color: #3447aa; }
+.site-footer { border: 0; background: #e8edf2; }
+
+/* The demo uses the same token set as the production application. */
+.iphone-device {
+  border: 0;
+  background: var(--night-flat);
+  box-shadow: none;
+}
+.iphone-device::before { display: none; }
+.iphone-side-button { background: var(--night-elevated); }
+.iphone-bezel { background: var(--night-flat); }
+.iphone-screen {
+  --app-bg: #f4f6f8;
+  --app-surface: #ffffff;
+  --app-surface-muted: #e8edf2;
+  --app-elevated: #ffffff;
+  --app-input: #edf1f5;
+  --app-text: #17202b;
+  --app-muted: #687586;
+  --app-border: transparent;
+  --app-border-strong: transparent;
+  --app-hairline: transparent;
+  --app-primary: #4f63d8;
+  --app-primary-fg: #ffffff;
+  --app-header: #17202b;
+  --app-header-fg: #ffffff;
+  --app-header-muted: #687586;
+  font-family: var(--display);
+}
+.iphone-screen.is-dark {
+  --app-bg: #0e1218;
+  --app-surface: #202837;
+  --app-surface-muted: #202837;
+  --app-elevated: #161c24;
+  --app-input: #1c2430;
+  --app-text: #f7f8fa;
+  --app-muted: #9aa6b5;
+  --app-border: transparent;
+  --app-border-strong: transparent;
+  --app-hairline: transparent;
+  --app-primary: #6677e8;
+  --app-primary-fg: #ffffff;
+}
+.app-header,
+.app-bottom-nav { border: 0; box-shadow: none; }
+.app-mini-mark { background: var(--app-primary); color: #fff; }
+.app-metric-list,
+.app-store-list,
+.app-team-list { gap: 7px; }
+.app-metric-row,
+.app-resource-row,
+.app-stock-chart,
+.app-store-card,
+.app-team-card,
+.app-settings-row,
+.app-settings-group .app-settings-row,
+.app-settings-group button,
+.app-report-list button,
+.inventory-toolbar button,
+.inventory-search,
+.inventory-row-meta em,
+.app-card,
+.app-action-grid button,
+.app-search,
+.app-toolbar button,
+.app-notice,
+.app-sheet form input,
+.app-success {
+  border: 0;
+  box-shadow: none;
+}
+.app-metric-row,
+.app-resource-row,
+.app-stock-chart,
+.app-store-card,
+.app-team-card,
+.app-settings-row,
+.app-settings-group button,
+.app-report-list button { background: var(--app-elevated); }
+.app-settings-group { display: grid; gap: 6px; }
+.app-settings-row,
+.app-settings-group .app-settings-row,
+.app-settings-group button,
+.app-settings-group .app-settings-row:first-of-type,
+.app-settings-group .app-settings-row:last-child,
+.app-settings-group .app-settings-row:only-of-type,
+.app-settings-group button:first-of-type,
+.app-settings-group button:last-child,
+.app-settings-group button:only-of-type { border: 0; border-radius: 10px; }
+.inventory-list { display: grid; gap: 5px; }
+.inventory-row,
+.app-product-row {
+  border: 0;
+  border-radius: 10px;
+  background: var(--app-elevated);
+  padding-right: 9px;
+  padding-left: 9px;
+}
+.app-activity-rows,
+.app-product-list { border: 0; }
+.app-activity-rows > div { border: 0; }
+.app-activity-rows > div + div { margin-top: 4px; }
+.inventory-toolbar .app-action-primary,
+.inventory-toolbar button.is-active,
+.app-bottom-nav button.is-active > span,
+.app-segments button.is-active { background: var(--app-primary); color: var(--app-primary-fg); }
+.inventory-row-meta em.is-low { border: 0; background: #fff2de; color: #a96813; }
+.iphone-screen.is-dark .inventory-row-meta em.is-low { background: #2b241a; color: #d99f47; }
+.app-sheet {
+  border: 0;
+  background: var(--app-elevated);
+  box-shadow: none;
+}
+.app-primary-button,
+.app-light-button { background: var(--app-primary); color: var(--app-primary-fg); }
+.app-danger-button { background: #fbe8eb; color: #b84251; }
+
+/* Legal, account deletion and brand reference pages */
+.document-switcher a,
+.policy-document,
+.logo-card,
+.palette-grid,
+.palette-card,
+.type-card,
+.principle-grid article {
+  border: 0;
+  box-shadow: none;
+}
+.document-switcher a { background: #fff; color: var(--ink); }
+.document-switcher a:hover { background: #e8edff; color: #3447aa; transform: none; }
+.policy-layout { gap: 54px; }
+.policy-index { border: 0; }
+.policy-index a:hover { color: var(--primary-flat); }
+.policy-document { background: #fff; }
+.policy-document > header { border: 0; background: #e8edff; }
+.policy-document > header .document-number { color: rgba(79, 99, 216, 0.16); }
+.policy-document > section { border: 0; }
+.policy-document > section + section { margin-top: 4px; }
+.policy-document-dark { background: var(--night-flat); color: #fff; }
+.policy-document-dark > header { background: #1c2430; }
+.policy-document-dark > header p,
+.policy-document-dark section p,
+.policy-document-dark .policy-list,
+.policy-document-dark .policy-steps { color: #a7b0bd; }
+
+.logo-grid,
+.type-grid { gap: 12px; }
+.logo-card { border-radius: 18px; }
+.logo-card-light { background: #fff; color: var(--ink); }
+.logo-card-dark { background: var(--night-surface); color: #fff; }
+.logo-card-mark { background: var(--primary-flat-dark); color: #fff; }
+.logo-card-mark .brand-mark { padding: 0; background: transparent; }
+.brand-page-lockup,
+.brand-rule,
+.policy-document section p,
+.palette-card p,
+.principle-grid p { font-family: var(--display); }
+.palette-grid { gap: 8px; overflow: visible; }
+.palette-card { min-height: 210px; border-radius: 16px; }
+.type-card { border-radius: 18px; background: #fff; }
+.font-manrope { font-family: var(--display); }
+.principle-grid article {
+  min-height: 280px;
+  border-radius: 18px;
+  background: var(--night-surface);
+}
+.principle-grid article > svg { color: var(--primary-flat-dark); }
+
+@media (max-width: 800px) {
+  .site-header nav { border: 0; background: var(--paper); box-shadow: none; }
+  .site-header nav a:hover { background: #e8edff; }
+}
+
+@media (max-width: 620px) {
+  .subscription-panel,
+  .support-form,
+  .policy-document,
+  .logo-card,
+  .type-card { border-radius: 16px; }
+  .palette-grid { gap: 8px; }
+  .palette-card { border: 0; }
+}
