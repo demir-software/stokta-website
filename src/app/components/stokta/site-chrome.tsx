@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Accessibility, Menu, Monitor, Moon, Sun, X } from "lucide-react";
+import { useWebsiteTheme, WebsiteThemePreference } from "./website-theme";
 
 export const SUPPORT_EMAIL = "support@demir.software";
 
@@ -9,25 +10,45 @@ export const siteHref = (path = "") => `${baseUrl}${path.replace(/^\//, "")}`;
 
 export function BrandMark({ size = 36 }: { size?: number }) {
   return (
-    <svg aria-hidden="true" className="brand-mark" height={size} viewBox="0 0 1024 1024" width={size}>
-      <rect fill="#6677E8" height="1024" rx="220" width="1024" />
-      <g fill="#F8F7F3">
-        <rect height="116" rx="28" width="104" x="244" y="236" />
-        <rect height="116" rx="28" width="128" x="372" y="236" />
-        <rect height="116" rx="28" width="208" x="524" y="236" />
-        <rect height="116" rx="28" width="208" x="292" y="454" />
-        <rect height="116" rx="28" width="128" x="524" y="454" />
-        <rect height="116" rx="28" width="104" x="676" y="454" />
-        <rect height="116" rx="28" width="208" x="244" y="672" />
-        <rect height="116" rx="28" width="128" x="476" y="672" />
-      </g>
-      <rect fill="#E77864" height="116" rx="28" width="104" x="628" y="672" />
+    <svg aria-hidden="true" className="brand-mark" height={size} viewBox="0 0 72 72" width={size}>
+      <rect fill="var(--crystal-mark-surface, #FFFFFF)" height="70" rx="15" stroke="var(--crystal-border, #BDBDBD)" width="70" x="1" y="1" />
+      <rect fill="var(--crystal-blue, #4285F4)" height="16" rx="4" width="16" x="8" y="8" />
+      <rect fill="var(--crystal-blue, #4285F4)" height="16" rx="4" width="16" x="28" y="8" />
+      <rect fill="var(--crystal-red, #EA4335)" height="16" rx="4" width="16" x="48" y="8" />
+      <rect fill="var(--crystal-blue, #4285F4)" height="16" rx="4" width="16" x="8" y="28" />
+      <rect fill="var(--crystal-mark-surface, #FFFFFF)" height="16" rx="4" stroke="var(--crystal-border, #BDBDBD)" width="16" x="28" y="28" />
+      <rect fill="var(--crystal-yellow, #FBBC05)" height="16" rx="4" width="16" x="48" y="28" />
+      <rect fill="var(--crystal-green, #34A853)" height="16" rx="4" width="16" x="8" y="48" />
+      <rect fill="var(--crystal-blue, #4285F4)" height="16" rx="4" width="16" x="28" y="48" />
+      <rect fill="var(--crystal-blue, #4285F4)" height="16" rx="4" width="16" x="48" y="48" />
     </svg>
   );
 }
 
 export function BrandLockup({ markSize = 36 }: { markSize?: number }) {
   return <span className="brand-lockup-content"><BrandMark size={markSize} /><span>Stokta</span></span>;
+}
+
+const themeOptions = [
+  { value: "system", label: "System" },
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "colorblind", label: "Colorblind" },
+] as const;
+
+function ThemeSelector() {
+  const { preference, setPreference } = useWebsiteTheme();
+  const ThemeIcon = preference === "dark" ? Moon : preference === "light" ? Sun : preference === "colorblind" ? Accessibility : Monitor;
+
+  return (
+    <label className="theme-selector">
+      <ThemeIcon aria-hidden="true" size={16} />
+      <span>Theme</span>
+      <select aria-label="Website theme" onChange={(event) => setPreference(event.target.value as WebsiteThemePreference)} value={preference}>
+        {themeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+      </select>
+    </label>
+  );
 }
 
 export function SiteHeader() {
@@ -45,6 +66,7 @@ export function SiteHeader() {
           <a href={`${siteHref()}#plans`} onClick={closeMenu}>Pro</a>
           <a href={`${siteHref()}#support`} onClick={closeMenu}>Support</a>
         </nav>
+        <ThemeSelector />
         <a className="header-action" href={`${siteHref()}#download`}>Download</a>
       </div>
     </header>

@@ -18,7 +18,7 @@ import {
   Store,
   Users,
 } from "lucide-react";
-import { IPhoneDemo } from "./iphone-app-demo";
+import { ProductShowcase } from "./product-showcase";
 import { BrandMark, SiteFooter, SiteHeader, SUPPORT_EMAIL } from "./site-chrome";
 
 const APP_STORE_URL = "https://apps.apple.com/us/search?term=Stokta";
@@ -99,14 +99,16 @@ export function ShowcaseSite() {
 
       <main id="main-content">
         <section className="hero" id="top">
+          <div aria-hidden="true" className="crystal-shard-field"><span /><span /><span /><span /></div>
           <div className="hero-copy">
+            <div className="launch-lockup"><BrandMark size={52} /><span><strong>Stokta Crystal</strong><small>Inventory, in focus.</small></span></div>
             <span className="eyebrow"><span className="status-dot" /> Local-first inventory</span>
             <h1>Know what is in stock. Everywhere.</h1>
             <p className="hero-lede">Start with one local store and 10,000 products. Upgrade to Stokta Pro when your operation needs teams, multiple devices and cloud-synced inventory at serious scale.</p>
             <div className="store-buttons" id="download"><StoreButton store="apple" /><StoreButton store="google" /></div>
-            <a className="hero-text-link" href="#demo">Try the interactive app <ArrowRight aria-hidden="true" size={17} /></a>
+            <a className="hero-text-link" href="#demo">Explore real app screens <ArrowRight aria-hidden="true" size={17} /></a>
           </div>
-          <div id="demo"><IPhoneDemo /></div>
+          <div id="demo"><ProductShowcase /></div>
         </section>
 
         <section className="section section-dark" id="features">
